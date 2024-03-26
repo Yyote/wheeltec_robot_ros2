@@ -16,10 +16,10 @@ def generate_launch_description():
     
     
     if not LaunchConfiguration('is_cartographer'):
-        ld.add_action(actions.Node(
+        ld.add_action(Node(
             package="robot_pose_ekf",
-            executable="robot_pose_ekf",
-            name="robot_pose_ekf",
+            node_executable="robot_pose_ekf",
+            node_name="robot_pose_ekf",
             output="screen",
             parameters=[
                 {"output_frame" : "odom_combined"},
