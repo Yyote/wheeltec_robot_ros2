@@ -28,8 +28,8 @@ def generate_launch_description():
         ld.add_action(
             Node(
                 package='turn_on_wheeltec_robot',
-                executable='wheeltec_robot_node',
-                name='wheeltec_robot',
+                node_executable='wheeltec_robot_node',
+                node_name='wheeltec_robot',
                 # emulate_tty=True, output='screen',
                 parameters=[
                     {'usart_port_name' : '/dev/wheeltec_controller'},
@@ -51,8 +51,8 @@ def generate_launch_description():
         ld.add_action(
             Node(
                 package='turn_on_wheeltec_robot',
-                executable='wheeltec_robot_node',
-                name='wheeltec_robot',
+                node_executable='wheeltec_robot_node',
+                node_name='wheeltec_robot',
                 # emulate_tty=True, output='screen',
                 parameters=[
                     {'usart_port_name' : '/dev/wheeltec_controller'},

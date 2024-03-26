@@ -133,8 +133,8 @@ ament_target_dependencies(wheeltec_robot_node ${COLCON_VARS})
 #     INCLUDES DESTINATION include
 # )
 
-# install(TARGETS wheeltec_robot_node
-# DESTINATION lib/${PROJECT_NAME}/)
+install(TARGETS wheeltec_robot_node
+DESTINATION lib/${PROJECT_NAME}/)
 
 # ament_export_targets(wheeltec_robot_node HAS_LIBRARY_TARGET)
 

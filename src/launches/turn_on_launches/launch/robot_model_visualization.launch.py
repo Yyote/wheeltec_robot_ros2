@@ -764,14 +764,14 @@ def generate_launch_description():
     
     
 # Описание робота
-    if car_mode == 'mini_tank':
-        ld.add_action(
-            DeclareLaunchArgument(
-                node_name='robot_description',
-                default_value=f'{os.path.join(get_package_share_directory("turn_on_wheeltec_robot"), "urdf/mini_4wd_robot.urdf")}',
-                # description='Описание аргумента'
-            )
-        )
+    # if car_mode == 'mini_tank':
+    #     ld.add_action(
+    #         DeclareLaunchArgument(
+    #             node_name='robot_description',
+    #             default_value=f'{os.path.join(get_package_share_directory("turn_on_wheeltec_robot"), "urdf/mini_4wd_robot.urdf")}',
+    #             # description='Описание аргумента'
+    #         )
+    #     )
     
     
     
