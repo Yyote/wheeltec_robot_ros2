@@ -21,7 +21,7 @@
 #include <tf2_ros/transform_broadcaster.h>
 #include "tf2/LinearMath/Matrix3x3.h"
 #include "tf2/LinearMath/Quaternion.h"
-#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <nav_msgs/msg/odometry.hpp>
@@ -150,7 +150,7 @@ class turn_on_robot : public rclcpp::Node
 		rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr Cmd_Vel_Sub; //Initialize the topic subscriber //初始化话题订阅者
 		//The speed topic subscribes to the callback function
 		//速度话题订阅回调函数
-		void Cmd_Vel_Callback(const geometry_msgs::msg::Twist &twist_aux);              
+		void Cmd_Vel_Callback(const geometry_msgs::msg::Twist::SharedPtr twist_aux);              
 
 		rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher;
 		rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_publisher;

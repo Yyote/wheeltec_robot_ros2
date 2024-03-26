@@ -57,7 +57,7 @@ Date: January 28, 2021
 Function: The speed topic subscription Callback function, according to the subscribed instructions through the serial port command control of the lower computer
 功能: 速度话题订阅回调函数Callback，根据订阅的指令通过串口发指令控制下位机
 ***************************************/
-void turn_on_robot::Cmd_Vel_Callback(const geometry_msgs::msg::Twist &twist_aux)
+void turn_on_robot::Cmd_Vel_Callback(const geometry_msgs::msg::Twist::SharedPtr twist_aux)
 {
   short  transition;  //intermediate variable //中间变量
 
@@ -68,21 +68,21 @@ void turn_on_robot::Cmd_Vel_Callback(const geometry_msgs::msg::Twist &twist_aux)
   //The target velocity of the X-axis of the robot
   //机器人x轴的目标线速度
   transition=0;
-  transition = twist_aux.linear.x*1000; //将浮点数放大一千倍，简化传输
+  transition = twist_aux->linear.x*1000; //将浮点数放大一千倍，简化传输
   Send_Data.tx[4] = transition;     //取数据的低8位
   Send_Data.tx[3] = transition>>8;  //取数据的高8位
 
   //The target velocity of the Y-axis of the robot
   //机器人y轴的目标线速度
   transition=0;
-  transition = twist_aux.linear.y*1000;
+  transition = twist_aux->linear.y*1000;
   Send_Data.tx[6] = transition;
   Send_Data.tx[5] = transition>>8;
 
   //The target angular velocity of the robot's Z axis
   //机器人z轴的目标角速度
   transition=0;
-  transition = twist_aux.angular.z*1000;
+  transition = twist_aux->angular.z*1000;
   Send_Data.tx[8] = transition;
   Send_Data.tx[7] = transition>>8;
 
@@ -94,7 +94,7 @@ void turn_on_robot::Cmd_Vel_Callback(const geometry_msgs::msg::Twist &twist_aux)
   }
   catch (serial::IOException& e)   
   {
-    RCLCPP_ERROR_STREAM(this->get_logger(), "Unable to send data through serial port"); //If sending data fails, an error message is printed //如果发送数据失败，打印错误信息
+    RCLCPP_ERROR_ONCE(this->get_logger(), "Unable to send data through serial port"); //If sending data fails, an error message is printed //如果发送数据失败，打印错误信息
   }
 }
 /**************************************
@@ -512,7 +512,7 @@ turn_on_robot::turn_on_robot():Sampling_Time(0),Power_voltage(0),Node("wheeltec_
   //速度控制命令订阅回调函数设置
   Cmd_Vel_Sub = this->create_subscription<geometry_msgs::msg::Twist>("cmd_vel", 100, std::bind(&turn_on_robot::Cmd_Vel_Callback, this, _1)); 
 
-  RCLCPP_INFO_STREAM(this->get_logger(), "Data ready"); //Prompt message //提示信息
+  RCLCPP_INFO_ONCE(this->get_logger(), "Data ready"); //Prompt message //提示信息
   
   try
   { 
@@ -525,11 +525,11 @@ turn_on_robot::turn_on_robot():Sampling_Time(0),Power_voltage(0),Node("wheeltec_
   }
   catch (serial::IOException& e)
   {
-    RCLCPP_ERROR_STREAM(this->get_logger(), "wheeltec_robot can not open serial port,Please check the serial port cable! "); //If opening the serial port fails, an error message is printed //如果开启串口失败，打印错误信息
+    RCLCPP_ERROR_ONCE(this->get_logger(), "wheeltec_robot can not open serial port,Please check the serial port cable! "); //If opening the serial port fails, an error message is printed //如果开启串口失败，打印错误信息
   }
   if(Stm32_Serial.isOpen())
   {
-    RCLCPP_INFO_STREAM(this->get_logger(), "wheeltec_robot serial port opened"); //Serial port opened successfully //串口开启成功提示
+    RCLCPP_INFO_ONCE(this->get_logger(), "wheeltec_robot serial port opened"); //Serial port opened successfully //串口开启成功提示
   }
   _Last_Time = this->get_clock()->now();
 }
@@ -565,9 +565,9 @@ turn_on_robot::~turn_on_robot()
   }
   catch (serial::IOException& e)   
   {
-    RCLCPP_ERROR_STREAM(this->get_logger(), "Unable to send data through serial port"); //If sending data fails, an error message is printed //如果发送数据失败,打印错误信息
+    RCLCPP_ERROR_ONCE(this->get_logger(), "Unable to send data through serial port"); //If sending data fails, an error message is printed //如果发送数据失败,打印错误信息
   }
   Stm32_Serial.close(); //Close the serial port //关闭串口  
-  RCLCPP_INFO_STREAM(this->get_logger(), "Shutting down"); //Prompt message //提示信息
+  RCLCPP_INFO_ONCE(this->get_logger(), "Shutting down"); //Prompt message //提示信息
 }
 
