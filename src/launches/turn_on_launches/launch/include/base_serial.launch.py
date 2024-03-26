@@ -32,7 +32,7 @@ def generate_launch_description():
                 node_name='wheeltec_robot',
                 # emulate_tty=True, output='screen',
                 parameters=[
-                    {'usart_port_name' : '/dev/wheeltec_controller'},
+                    {'usart_port_name' : '/dev/ttyACM0'},
                     {'serial_baud_rate' : 115200},
                     {'odom_frame_id' : LaunchConfiguration('odom_frame_id')},
                     {'robot_frame_id' : 'base_footprint'},
