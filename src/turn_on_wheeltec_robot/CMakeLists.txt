@@ -62,10 +62,10 @@ target_link_libraries(wheeltec_robot_node serial::serial)
 ament_target_dependencies(wheeltec_robot_node ${COLCON_VARS})
 
 
-install(
-    DIRECTORY include/${PROJECT_NAME}
-    DESTINATION include
-)
+# install(
+#     DIRECTORY include/${PROJECT_NAME}
+#     DESTINATION include
+# )
 
 install(
     TARGETS wheeltec_robot_node
