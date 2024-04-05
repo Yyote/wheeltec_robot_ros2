@@ -12,6 +12,13 @@ def generate_launch_description():
     
     ld.add_action(
         DeclareLaunchArgument(
+            name='robot_name',
+            default_value='robot0'
+        )
+    )
+
+    ld.add_action(
+        DeclareLaunchArgument(
             name='odom_frame_id',
             default_value='odom_combined'
         )
@@ -30,6 +37,7 @@ def generate_launch_description():
                 package='turn_on_wheeltec_robot',
                 executable='wheeltec_robot_node',
                 name='wheeltec_robot',
+                namespace=LaunchConfiguration('robot_name'),
                 # emulate_tty=True, output='screen',
                 parameters=[
                     {'usart_port_name' : '/dev/ttyACM0'},
@@ -54,6 +62,7 @@ def generate_launch_description():
                 executable='wheeltec_robot_node',
                 name='wheeltec_robot',
                 # emulate_tty=True, output='screen',
+                namespace=LaunchConfiguration('robot_name'),
                 parameters=[
                     {'usart_port_name' : '/dev/wheeltec_controller'},
                     {'serial_baud_rate' : 115200},

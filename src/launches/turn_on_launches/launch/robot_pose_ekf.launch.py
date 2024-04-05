@@ -9,6 +9,13 @@ def generate_launch_description():
     
     ld.add_action(
         DeclareLaunchArgument(
+            name='robot_name',
+            default_value='robot0'
+        )
+    )
+
+    ld.add_action(
+        DeclareLaunchArgument(
             name='is_cartographer',
             default_value='false',
         )
@@ -16,11 +23,12 @@ def generate_launch_description():
     
     
     if not LaunchConfiguration('is_cartographer'):
-        ld.add_action(actions.Node(
+        ld.add_action(Node(
             package="robot_pose_ekf",
             executable="robot_pose_ekf",
             name="robot_pose_ekf",
             output="screen",
+            namespace=LaunchConfiguration('robot_name'),
             parameters=[
                 {"output_frame" : "odom_combined"},
                 {"base_footprint_frame" : "base_footprint"},

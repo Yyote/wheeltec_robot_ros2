@@ -12,6 +12,13 @@ def generate_launch_description():
     
     ld.add_action(
         DeclareLaunchArgument(
+            name='robot_name',
+            default_value='robot0'
+        )
+    )
+
+    ld.add_action(
+        DeclareLaunchArgument(
             name='car_mode',
             default_value='mini_tank',
     #    doc="opt: mini_akm,senior_akm,top_akm_bs,top_akm_dl,
@@ -83,7 +90,10 @@ def generate_launch_description():
 
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
-        launch_args1 = {'odom_frame_id' : LaunchConfiguration('odom_frame_id')}.items()
+        launch_args1 = {
+            'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
+            'robot_name' : LaunchConfiguration('robot_name'),
+            }.items()
         launch1 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
                             get_package_share_directory('turn_on_launches'), ''),
@@ -92,9 +102,12 @@ def generate_launch_description():
                         )
         
         launch_args2 = [
-            {'if_voice_control' : True}.items(),
-            {'moveit_config' : True}.items(),
-            {'preset' : True}.items()
+            {
+                'if_voice_control' : True,
+                'moveit_config' : True,
+                'preset' : True,
+                'robot_name': LaunchConfiguration('robot_name'),
+                }.items(),
         ]
         launch2 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
@@ -109,6 +122,7 @@ def generate_launch_description():
     if not ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args2 = {
                 'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
+                'robot_name' : LaunchConfiguration('robot_name'),
             }.items()
         launch2 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
@@ -120,20 +134,28 @@ def generate_launch_description():
         ld.add_action(launch2)
     
     if LaunchConfiguration('navigation') == 'true':
+        args={
+            'car_mode' : car_mode,
+            'robot_name' : LaunchConfiguration('robot_name'),
+            }.items()
         launch_teb_local_planner = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
                                         get_package_share_directory('turn_on_launches'), 'launch'),
                                         '/teb_local_planner.launch.py']), 
-                                        launch_arguments={'car_mode' : car_mode}.items()
+                                        launch_arguments=args
                                     )
         ld.add_action(launch_teb_local_planner)
 
     if LaunchConfiguration('pure3d_nav') == 'true':
+        args={
+            'car_mode' : car_mode,
+            'robot_name' : LaunchConfiguration('robot_name'),
+            }.items()
         launch_teb_local_planner = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
                                         get_package_share_directory('turn_on_launches'), 'launch'),
                                         '/teb_local_planner_pure3d.launch.py']), 
-                                        launch_arguments={'car_mode' : car_mode}.items()
+                                        launch_arguments=args
                                     )
         ld.add_action(launch_teb_local_planner)
     
@@ -145,12 +167,16 @@ def generate_launch_description():
         #                                 launch_arguments=[{'car_mode' : car_mode}, {'if_voice' : if_voice}]
         #                             )
         # ld.add_action(robot_model_visualization)
+        args={
+            'is_cartographer' : LaunchConfiguration('is_cartographer'),
+            'robot_name' : LaunchConfiguration('robot_name'),
+            }.items()
         
         robot_pose_ekf = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
                                         get_package_share_directory('turn_on_launches'), ''),
                                         '/robot_pose_ekf.launch.py']), 
-                                        launch_arguments={'is_cartographer' : LaunchConfiguration('is_cartographer')}.items()
+                                        launch_arguments=args
                                     )
         ld.add_action(robot_pose_ekf)
     
