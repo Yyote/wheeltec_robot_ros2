@@ -100,6 +100,19 @@ def generate_launch_description():
         )
     )
 
+    ld.add_action(
+        Node(
+            package='astra_camera',
+            executable='astra_node',
+            name='astra_node',
+            # emulate_tty=True, output='screen',
+            namespace=LaunchConfiguration('robot_name'),
+            # parameters=[
+            #     {'usart_port_name' : '/dev/wheeltec_controller'},
+            # ]
+        )
+    )
+
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {
             'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
