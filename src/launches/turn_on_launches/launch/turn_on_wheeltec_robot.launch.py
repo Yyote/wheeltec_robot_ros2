@@ -5,6 +5,7 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -86,8 +87,18 @@ def generate_launch_description():
             )
         )
 
-
-
+        ld.add_action(
+            Node(
+                package='ls01',
+                executable='lsn10',
+                name='lsn10',
+                # emulate_tty=True, output='screen',
+                namespace=LaunchConfiguration('robot_name'),
+                # parameters=[
+                #     {'usart_port_name' : '/dev/wheeltec_controller'},
+                # ]
+            )
+        )
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {

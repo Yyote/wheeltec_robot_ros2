@@ -1,0 +1,8 @@
+lsn10p:
+  ros__parameters:
+    scan_topic: scan
+    lidar_frame: laser_link
+    serial_port: /dev/ttyACM0
+    range_min: 0.1
+    range_max: 15.0
+    scan_rate: 10
