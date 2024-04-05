@@ -30,7 +30,7 @@ astra_camera_node:
 uvc_camera_node:
   ros__parameters:
     vendor: "0x2bc5"
-    product: "0x0502"
+    product: "0x0402"
     serial: ""
     index: 0
     width: 640
