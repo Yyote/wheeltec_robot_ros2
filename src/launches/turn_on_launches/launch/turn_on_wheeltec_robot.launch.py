@@ -102,9 +102,9 @@ def generate_launch_description():
 
     ld.add_action(
         Node(
-            package='astra_camera',
-            executable='astra_node',
-            name='astra_node',
+            package='ros2_astra_camera',
+            executable='astra_camera_node',
+            name='astra_camera',
             # emulate_tty=True, output='screen',
             namespace=LaunchConfiguration('robot_name'),
             # parameters=[
