@@ -122,11 +122,11 @@ void AstraDriver::advertiseROSTopics() {
   std::lock_guard<std::recursive_mutex> lock(connect_mutex_);
 
   // Asus Xtion PRO does not have an RGB camera
-  // RCLCPP_WARN(get_logger(), "has color sensor is %d",
-  // device_->hasColorSensor()); if (device_->hasColorSensor()) {
-  //   pub_color_ = image_transport::create_camera_publisher(this,
-  //   "color/image"); imageConnectCb();
-  // }
+  RCLCPP_WARN(get_logger(), "has color sensor is %d",
+  device_->hasColorSensor()); if (device_->hasColorSensor()) {
+    pub_color_ = image_transport::create_camera_publisher(this,
+    "color/image"); imageConnectCb();
+  }
 
   RCLCPP_WARN(get_logger(), "has IR sensor is %d", device_->hasIRSensor());
   if (device_->hasIRSensor()) {
