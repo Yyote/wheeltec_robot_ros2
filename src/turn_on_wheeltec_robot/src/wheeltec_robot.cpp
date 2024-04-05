@@ -14,8 +14,11 @@ int main(int argc, char** argv)
 {
   // ros::init(argc, argv, "wheeltec_robot"); //ROS initializes and sets the node name //ROS初始化 并设置节点名称 
   rclcpp::init(argc, argv);
-  turn_on_robot Robot_Control; //Instantiate an object //实例化一个对象
-  Robot_Control.Control(); //Loop through data collection and publish the topic //循环执行数据采集和发布话题等操作
+  // turn_on_robot Robot_Control; //Instantiate an object //实例化一个对象
+  // Robot_Control.Control(); //Loop through data collection and publish the topic //循环执行数据采集和发布话题等操作
+  rclcpp::spin(std::make_shared<turn_on_robot>());
+  rclcpp::shutdown();
+  
   return 0;  
 } 
 
