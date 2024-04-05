@@ -22,7 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'turtlebot_teleop_keyboard = wheeltec_robot_rc.turtlebot_teleop_key:main'
+            'turtlebot_teleop_keyboard = wheeltec_robot_rc.turtlebot_teleop_key:main',
+            'turtlebot_teleop_keyboard0 = wheeltec_robot_rc.turtlebot_teleop_key_robot0:main',
         ],
     },
 )
