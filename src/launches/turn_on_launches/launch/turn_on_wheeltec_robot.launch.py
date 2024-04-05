@@ -3,9 +3,10 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, GroupAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import Node
+from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
+from launch_ros.actions import Node, PushRosNamespace
 
 
 def generate_launch_description():
@@ -100,18 +101,35 @@ def generate_launch_description():
         )
     )
 
-    ld.add_action(
-        Node(
-            package='ros2_astra_camera',
-            executable='astra_camera_node',
-            name='astra_camera',
-            # emulate_tty=True, output='screen',
-            namespace=LaunchConfiguration('robot_name'),
-            # parameters=[
-            #     {'usart_port_name' : '/dev/wheeltec_controller'},
-            # ]
-        )
+    # ld.add_action(
+    #     Node(
+    #         package='ros2_astra_camera',
+    #         executable='astra_camera_node',
+    #         name='astra_camera',
+    #         # emulate_tty=True, output='screen',
+    #         namespace=LaunchConfiguration('robot_name'),
+    #         # parameters=[
+    #         #     {'usart_port_name' : '/dev/wheeltec_controller'},
+    #         # ]
+    #     )
+    # )
+
+    # launch_args2 = {
+    #         'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
+    #         'robot_name' : LaunchConfiguration('robot_name'),
+    #     }.items()
+    
+    launch2 = GroupAction([    
+        PushRosNamespace(f'{LaunchConfiguration('robot_name')}'),
+        IncludeLaunchDescription(
+                        XMLLaunchDescriptionSource([os.path.join(
+                        get_package_share_directory('astra_camera'), 'launch'),
+                        'astra.launch.xml']), 
+                    )]
     )
+    
+    ld.add_action(launch2)
+    
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {
