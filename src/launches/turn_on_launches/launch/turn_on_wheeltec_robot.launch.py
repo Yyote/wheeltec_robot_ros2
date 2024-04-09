@@ -132,7 +132,7 @@ def generate_launch_description():
     
     rtabmap_args = {
         'namespace' : LaunchConfiguration('robot_name')
-    }
+    }.items()
 
     rtabmap_launch = GroupAction([    
         PushRosNamespace(LaunchConfiguration('robot_name')),
