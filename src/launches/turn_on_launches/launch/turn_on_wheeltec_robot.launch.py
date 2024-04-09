@@ -138,7 +138,7 @@ def generate_launch_description():
         PushRosNamespace(LaunchConfiguration('robot_name')),
         IncludeLaunchDescription(
                         XMLLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('turn_on_launches'), 'launch/'),
+                        get_package_share_directory('turn_on_launches'), ''),
                         'astra_rgbd.launch.py']), 
                         launch_arguments=rtabmap_args
                     )]
