@@ -10,7 +10,9 @@ def launch_setup(context, *args, **kwargs):
           'subscribe_depth':True,
           'approx_sync':True, # Set to True for OAK-D
           'approx_sync_max_interval':  0.01,
-          'wait_for_transform': 0.3
+          'wait_for_transform': 0.3,
+          'feature' : 6,
+          'strategy' : 1
 }]
 
     remappings=[
