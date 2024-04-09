@@ -146,6 +146,19 @@ def generate_launch_description():
     
     ld.add_action(rtabmap_launch)
     
+    
+    ld.add_action(
+        Node(
+            package='robot_models_tf2',
+            executable='tank',
+            name='tank_tf_publisher',
+            # emulate_tty=True, output='screen',
+            namespace=LaunchConfiguration('robot_name'),
+            # parameters=[
+            #     {'usart_port_name' : '/dev/wheeltec_controller'},
+            # ]
+        )
+    )
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {
