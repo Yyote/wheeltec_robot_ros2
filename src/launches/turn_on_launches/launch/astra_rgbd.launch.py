@@ -14,10 +14,10 @@ def launch_setup(context, *args, **kwargs):
 }]
 
     remappings=[
-          ('rgb/image', LaunchConfiguration('namespace').perform(context) + '/camera/color/image_raw'),
-          ('rgb/camera_info', LaunchConfiguration('namespace').perform(context) + '/camera/depth/camera_info'),
-          ('depth/image', LaunchConfiguration('namespace').perform(context) + '/camera/depth/image_raw'),
-          ('odom', LaunchConfiguration('namespace').perform(context) + '/odom'),]
+          ('rgb/image', LaunchConfiguration('namespace').perform(context) + 'camera/color/image_raw'),
+          ('rgb/camera_info', LaunchConfiguration('namespace').perform(context) + 'camera/depth/camera_info'),
+          ('depth/image', LaunchConfiguration('namespace').perform(context) + 'camera/depth/image_raw'),
+          ('odom', LaunchConfiguration('namespace').perform(context) + 'odom'),]
 
     return [
         # Nodes to launch

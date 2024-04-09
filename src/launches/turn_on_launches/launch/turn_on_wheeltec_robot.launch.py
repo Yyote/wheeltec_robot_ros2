@@ -140,7 +140,7 @@ def generate_launch_description():
                         PythonLaunchDescriptionSource([os.path.join(
                         get_package_share_directory('turn_on_launches'), ''),
                         'astra_rgbd.launch.py']), 
-                        launch_arguments=rtabmap_args
+                        # launch_arguments=rtabmap_args
                     )]
     )
     
