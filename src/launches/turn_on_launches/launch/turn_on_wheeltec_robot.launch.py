@@ -130,6 +130,22 @@ def generate_launch_description():
     
     ld.add_action(launch2)
     
+    rtabmap_args = {
+        'namespace' : LaunchConfiguration('robot_name')
+    }
+
+    rtabmap_launch = GroupAction([    
+        PushRosNamespace(LaunchConfiguration('robot_name')),
+        IncludeLaunchDescription(
+                        XMLLaunchDescriptionSource([os.path.join(
+                        get_package_share_directory('turn_on_launches'), 'launch/'),
+                        'astra_rgbd.launch.py']), 
+                        launch_arguments=rtabmap_args
+                    )]
+    )
+    
+    ld.add_action(rtabmap_launch)
+    
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {
