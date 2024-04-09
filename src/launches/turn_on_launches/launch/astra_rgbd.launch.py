@@ -12,7 +12,8 @@ def launch_setup(context, *args, **kwargs):
           'approx_sync_max_interval':  0.01,
           'wait_for_transform': 0.3,
           'feature' : 6,
-          'strategy' : 1
+          'strategy' : 1,
+          'nn' : 3
 }]
 
     remappings=[
