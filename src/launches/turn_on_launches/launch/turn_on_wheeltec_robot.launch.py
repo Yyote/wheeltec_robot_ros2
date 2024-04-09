@@ -135,7 +135,7 @@ def generate_launch_description():
     }.items()
 
     rtabmap_launch = GroupAction([    
-        PushRosNamespace(LaunchConfiguration('robot_name')),
+        # PushRosNamespace(LaunchConfiguration('robot_name')),
         IncludeLaunchDescription(
                         PythonLaunchDescriptionSource([os.path.join(
                         get_package_share_directory('turn_on_launches'), ''),
