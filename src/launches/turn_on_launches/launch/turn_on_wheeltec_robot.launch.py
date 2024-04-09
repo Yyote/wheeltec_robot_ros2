@@ -120,10 +120,10 @@ def generate_launch_description():
     #     }.items()
     
     launch2 = GroupAction([    
-        PushRosNamespace(f'{LaunchConfiguration('robot_name')}'),
+        PushRosNamespace(LaunchConfiguration('robot_name')),
         IncludeLaunchDescription(
                         XMLLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('astra_camera'), 'launch'),
+                        get_package_share_directory('astra_camera'), 'launch/'),
                         'astra.launch.xml']), 
                     )]
     )
