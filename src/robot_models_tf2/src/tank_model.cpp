@@ -16,7 +16,7 @@ class TankModelTFBroadcaster : public rclcpp::Node
     public:
     TankModelTFBroadcaster() : Node("TankModelTFBroadcaster") // инициалзация полей
     {
-        timer = this->create_wall_timer(100ms, std::bind(&TankModelTFBroadcaster::timer_callback, this));
+        timer = this->create_wall_timer(20ms, std::bind(&TankModelTFBroadcaster::timer_callback, this));
         broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
     }
 
