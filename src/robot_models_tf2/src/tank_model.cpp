@@ -42,7 +42,7 @@ class TankModelTFBroadcaster : public rclcpp::Node
         // transform.transform.rotation.z = -0.707;
         transform.transform.rotation.z = 0;
         // transform.transform.rotation.w = 0.707;
-        transform.transform.rotation.w = 0.;
+        transform.transform.rotation.w = 1;
 
         broadcaster->sendTransform(transform);
     }
