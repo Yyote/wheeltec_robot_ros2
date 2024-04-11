@@ -6,7 +6,7 @@ from launch_ros.actions import Node
 def launch_setup(context, *args, **kwargs):
     parameters=[{
         #   'frame_id': LaunchConfiguration('namespace').perform(context)[1:] + '_link',
-          'frame_id': '_link',
+          'frame_id': 'camera_link',
           'subscribe_depth':True,
           'approx_sync':True, # Set to True for OAK-D
           'approx_sync_max_interval':  0.01,
