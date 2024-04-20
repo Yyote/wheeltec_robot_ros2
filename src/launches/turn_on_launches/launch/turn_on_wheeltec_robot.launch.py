@@ -100,51 +100,33 @@ def generate_launch_description():
             # ]
         )
     )
-
-    # ld.add_action(
-    #     Node(
-    #         package='ros2_astra_camera',
-    #         executable='astra_camera_node',
-    #         name='astra_camera',
-    #         # emulate_tty=True, output='screen',
-    #         namespace=LaunchConfiguration('robot_name'),
-    #         # parameters=[
-    #         #     {'usart_port_name' : '/dev/wheeltec_controller'},
-    #         # ]
-    #     )
+    
+    # launch2 = GroupAction([    
+    #    PushRosNamespace(LaunchConfiguration('robot_name')),
+    #     IncludeLaunchDescription(
+    #                     XMLLaunchDescriptionSource([os.path.join(
+    #                     get_package_share_directory('astra_camera'), 'launch/'),
+    #                     'astra.launch.xml']), 
+    #                 )]
     # )
-
-    # launch_args2 = {
-    #         'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
-    #         'robot_name' : LaunchConfiguration('robot_name'),
-    #     }.items()
     
-    launch2 = GroupAction([    
-       PushRosNamespace(LaunchConfiguration('robot_name')),
-        IncludeLaunchDescription(
-                        XMLLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('astra_camera'), 'launch/'),
-                        'astra.launch.xml']), 
-                    )]
-    )
-    
-    ld.add_action(launch2)
+    # ld.add_action(launch2)
     
     rtabmap_args = {
         'namespace' : LaunchConfiguration('robot_name')
     }.items()
 
-    rtabmap_launch = GroupAction([    
-        PushRosNamespace(LaunchConfiguration('robot_name')),
-        IncludeLaunchDescription(
-                        PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('turn_on_launches'), ''),
-                        'astra_rgbd.launch.py']), 
-                        # launch_arguments=rtabmap_args
-                    )]
-    )
+    # rtabmap_launch = GroupAction([    
+    #     PushRosNamespace(LaunchConfiguration('robot_name')),
+    #     IncludeLaunchDescription(
+    #                     PythonLaunchDescriptionSource([os.path.join(
+    #                     get_package_share_directory('turn_on_launches'), ''),
+    #                     'rtabmap_astra_rgbd.launch.py']), 
+    #                     # launch_arguments=rtabmap_args
+    #                 )]
+    # )
     
-    ld.add_action(rtabmap_launch)
+    # ld.add_action(rtabmap_launch)
     
     
     ld.add_action(
