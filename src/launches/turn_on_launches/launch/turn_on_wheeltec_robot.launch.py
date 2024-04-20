@@ -144,8 +144,8 @@ def generate_launch_description():
     
     zed2i_launch = IncludeLaunchDescription(
                         PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('turn_on_launches'), ''),
-                        '/base_serial.launch.py']), 
+                        get_package_share_directory('zed_wrapper'), ''),
+                        'zed_camera.launch.py']), 
                         launch_arguments=zed2i_launch_args
                     )
     
