@@ -134,9 +134,10 @@ def generate_launch_description():
     # ld.add_action(rtabmap_launch)
     
     ###### ZED 2i
+    robot_name = LaunchConfiguration('robot_name')
 
     zed2i_launch_args = {
-            'camera_name' : LaunchConfiguration('robot_name')+"/zed2i",
+            'camera_name' : f"{robot_name}/zed2i",
             'publish_tf' : True,
             'camera_model' : 'zed2i',
         }.items()
