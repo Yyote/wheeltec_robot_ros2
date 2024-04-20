@@ -137,7 +137,7 @@ def generate_launch_description():
     robot_name = LaunchConfiguration('robot_name')
 
     zed2i_launch_args = {
-            'camera_name' : f"{robot_name}/zed2i",
+            'camera_name' : robot_name,
             'publish_tf' : 'true',
             'camera_model' : 'zed2i',
         }.items()
