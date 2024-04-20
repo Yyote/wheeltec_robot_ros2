@@ -93,7 +93,8 @@ def generate_launch_description():
             package='ls01',
             executable='lsn10',
             name='lsn10',
-            # emulate_tty=True, output='screen',
+            # emu            'publish_tf' : True,
+late_tty=True, output='screen',
             namespace=LaunchConfiguration('robot_name'),
             # parameters=[
             #     {'usart_port_name' : '/dev/wheeltec_controller'},
@@ -101,6 +102,9 @@ def generate_launch_description():
         )
     )
     
+
+    ##### ASTRA
+
     # launch2 = GroupAction([    
     #    PushRosNamespace(LaunchConfiguration('robot_name')),
     #     IncludeLaunchDescription(
@@ -112,9 +116,11 @@ def generate_launch_description():
     
     # ld.add_action(launch2)
     
-    rtabmap_args = {
-        'namespace' : LaunchConfiguration('robot_name')
-    }.items()
+    ##### RTABMAP
+
+    # rtabmap_args = {
+    #     'namespace' : LaunchConfiguration('robot_name')
+    # }.items()
 
     # rtabmap_launch = GroupAction([    
     #     PushRosNamespace(LaunchConfiguration('robot_name')),
@@ -128,7 +134,20 @@ def generate_launch_description():
     
     # ld.add_action(rtabmap_launch)
     
+    ###### ZED 2i
+
+    zed2i_args = {
+        'robot_name' : LaunchConfiguration('robot_name'),
+    }.items()
+
+    zed2i_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+        get_package_share_directory('turn_on_launches'), ''),
+        'zed2i.launch.py']), 
+        launch_arguments=zed2i_args
+    )
     
+
     ld.add_action(
         Node(
             package='robot_models_tf2',

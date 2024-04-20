@@ -400,7 +400,7 @@ bool turn_on_robot::Get_Sensor_Data_New()
                                                                           //获取运动底盘Y方向速度，Y速度仅在全向移动机器人底盘有效
         Robot_Vel.Z = Odom_Trans(Receive_Data.rx[6],Receive_Data.rx[7]); //Get the speed of the moving chassis in the Z direction //获取运动底盘Z方向速度   
         
-        RCLCPP_INFO_STREAM(this->get_logger(), "Velocities:\nRobot_Vel.X = " << Robot_Vel.X << "\nRobot_Vel.Y = " << Robot_Vel.Y << "\nRobot_Vel.Z = " << Robot_Vel.Z);
+        // RCLCPP_INFO_STREAM(this->get_logger(), "Velocities:\nRobot_Vel.X = " << Robot_Vel.X << "\nRobot_Vel.Y = " << Robot_Vel.Y << "\nRobot_Vel.Z = " << Robot_Vel.Z);
 
         //MPU6050 stands for IMU only and does not refer to a specific model. It can be either MPU6050 or MPU9250
         //Mpu6050仅代表IMU，不指代特定型号，既可以是MPU6050也可以是MPU9250
