@@ -356,20 +356,27 @@ bool turn_on_robot::Get_Sensor_Data_New()
   Receive_Data.Frame_Header = Receive_Data.rx[0]; //The first part of the data is the frame header 0X7B //数据的第一位是帧头0X7B
   Receive_Data.Frame_Tail = Receive_Data.rx[23];  //The last bit of data is frame tail 0X7D //数据的最后一位是帧尾0X7D
 
+  RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 8");
   if(Receive_Data_Pr[0] == FRAME_HEADER || count>0) //Ensure that the first data in the array is FRAME_HEADER //确保数组第一个数据为FRAME_HEADER
     count++;
+    RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 7");
   else 
+    RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 6");
   	count=0;
+  RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 5");
   if(count == 24) //Verify the length of the packet //验证数据包的长度
   {
+    RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 4");
     count=0;  //Prepare for the serial port data to be refill into the array //为串口数据重新填入数组做准备
     if(Receive_Data.Frame_Tail == FRAME_TAIL) //Verify the frame tail of the packet //验证数据包的帧尾
     {
       check=Check_Sum(22,READ_DATA_CHECK);  //BCC check passes or two packets are interlaced //BCC校验通过或者两组数据包交错
+      RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 3");
 
       if(check == Receive_Data.rx[22])  
       {
         error=0;  //XOR bit check successful //异或位校验成功
+        RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 2");
       }
       if(error == 0)
       {
@@ -379,6 +386,8 @@ bool turn_on_robot::Get_Sensor_Data_New()
         Receive_Data.rx[8],Receive_Data.rx[9],Receive_Data.rx[10],Receive_Data.rx[11],Receive_Data.rx[12],Receive_Data.rx[13],Receive_Data.rx[14],Receive_Data.rx[15],
         Receive_Data.rx[16],Receive_Data.rx[17],Receive_Data.rx[18],Receive_Data.rx[19],Receive_Data.rx[20],Receive_Data.rx[21],Receive_Data.rx[22],Receive_Data.rx[23]); 
         */
+
+        RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 1");
 
         Receive_Data.Flag_Stop=Receive_Data.rx[1]; //set aside //预留位
         Robot_Vel.X = Odom_Trans(Receive_Data.rx[2],Receive_Data.rx[3]); //Get the speed of the moving chassis in the X direction //获取运动底盘X方向速度
