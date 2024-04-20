@@ -356,31 +356,31 @@ bool turn_on_robot::Get_Sensor_Data_New()
   Receive_Data.Frame_Header = Receive_Data.rx[0]; //The first part of the data is the frame header 0X7B //数据的第一位是帧头0X7B
   Receive_Data.Frame_Tail = Receive_Data.rx[23];  //The last bit of data is frame tail 0X7D //数据的最后一位是帧尾0X7D
 
-  RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 8");
+  // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 8");
   if(Receive_Data_Pr[0] == FRAME_HEADER || count>0) //Ensure that the first data in the array is FRAME_HEADER //确保数组第一个数据为FRAME_HEADER
   {
     count++;
-    RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 7");
+    // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 7");
   }
   else 
   {
-    RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 6");
+    // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 6");
     count=0;
   }
-  RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 5");
+  // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 5");
   if(count == 24) //Verify the length of the packet //验证数据包的长度
   {
-    RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 4");
+    // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 4");
     count=0;  //Prepare for the serial port data to be refill into the array //为串口数据重新填入数组做准备
     if(Receive_Data.Frame_Tail == FRAME_TAIL) //Verify the frame tail of the packet //验证数据包的帧尾
     {
       check=Check_Sum(22,READ_DATA_CHECK);  //BCC check passes or two packets are interlaced //BCC校验通过或者两组数据包交错
-      RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 3");
+      // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 3");
 
       if(check == Receive_Data.rx[22])  
       {
         error=0;  //XOR bit check successful //异或位校验成功
-        RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 2");
+        // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 2");
       }
       if(error == 0)
       {
@@ -391,7 +391,7 @@ bool turn_on_robot::Get_Sensor_Data_New()
         Receive_Data.rx[16],Receive_Data.rx[17],Receive_Data.rx[18],Receive_Data.rx[19],Receive_Data.rx[20],Receive_Data.rx[21],Receive_Data.rx[22],Receive_Data.rx[23]); 
         */
 
-        RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 1");
+        // RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 1");
 
         Receive_Data.Flag_Stop=Receive_Data.rx[1]; //set aside //预留位
         Robot_Vel.X = Odom_Trans(Receive_Data.rx[2],Receive_Data.rx[3]); //Get the speed of the moving chassis in the X direction //获取运动底盘X方向速度
@@ -399,7 +399,9 @@ bool turn_on_robot::Get_Sensor_Data_New()
         Robot_Vel.Y = Odom_Trans(Receive_Data.rx[4],Receive_Data.rx[5]); //Get the speed of the moving chassis in the Y direction, The Y speed is only valid in the omnidirectional mobile robot chassis
                                                                           //获取运动底盘Y方向速度，Y速度仅在全向移动机器人底盘有效
         Robot_Vel.Z = Odom_Trans(Receive_Data.rx[6],Receive_Data.rx[7]); //Get the speed of the moving chassis in the Z direction //获取运动底盘Z方向速度   
-          
+        
+        RCLCPP_INFO_STREAM(this->get_logger(), "Velocities:\nRobot_Vel.X = " << Robot_Vel.X << "\nRobot_Vel.Y = " << Robot_Vel.Y << "\nRobot_Vel.Z = " << Robot_Vel.Z);
+
         //MPU6050 stands for IMU only and does not refer to a specific model. It can be either MPU6050 or MPU9250
         //Mpu6050仅代表IMU，不指代特定型号，既可以是MPU6050也可以是MPU9250
         Mpu6050_Data.accele_x_data = IMU_Trans(Receive_Data.rx[8],Receive_Data.rx[9]);   //Get the X-axis acceleration of the IMU     //获取IMU的X轴加速度  
