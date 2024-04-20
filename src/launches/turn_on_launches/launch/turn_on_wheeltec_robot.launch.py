@@ -93,8 +93,7 @@ def generate_launch_description():
             package='ls01',
             executable='lsn10',
             name='lsn10',
-            # emu            'publish_tf' : True,
-late_tty=True, output='screen',
+            # emulate_tty=True, output='screen',
             namespace=LaunchConfiguration('robot_name'),
             # parameters=[
             #     {'usart_port_name' : '/dev/wheeltec_controller'},
@@ -136,20 +135,20 @@ late_tty=True, output='screen',
     
     ###### ZED 2i
 
-    # zed2i_launch_args = {
-    #         'camera_name' : LaunchConfiguration('robot_name')+"/zed2i",
-    #         'publish_tf' : True,
-    #         'camera_model' : 'zed2i',
-    #     }.items()
+    zed2i_launch_args = {
+            'camera_name' : LaunchConfiguration('robot_name')+"/zed2i",
+            'publish_tf' : True,
+            'camera_model' : 'zed2i',
+        }.items()
     
-    # zed2i_launch = IncludeLaunchDescription(
-    #                     PythonLaunchDescriptionSource([os.path.join(
-    #                     get_package_share_directory('turn_on_launches'), ''),
-    #                     '/base_serial.launch.py']), 
-    #                     launch_arguments=zed2i_launch_args
-    #                 )
+    zed2i_launch = IncludeLaunchDescription(
+                        PythonLaunchDescriptionSource([os.path.join(
+                        get_package_share_directory('turn_on_launches'), ''),
+                        '/base_serial.launch.py']), 
+                        launch_arguments=zed2i_launch_args
+                    )
     
-    # ld.add_action(zed2i_launch)
+    ld.add_action(zed2i_launch)
     
 
     ld.add_action(
