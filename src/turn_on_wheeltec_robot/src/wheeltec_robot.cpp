@@ -465,8 +465,8 @@ void turn_on_robot::Control()
       Quaternion_Solution(Mpu6050.angular_velocity.x, Mpu6050.angular_velocity.y, Mpu6050.angular_velocity.z,\
                 Mpu6050.linear_acceleration.x, Mpu6050.linear_acceleration.y, Mpu6050.linear_acceleration.z);
 
-      Publish_Odom();      //Pub the speedometer topic //发布里程计话题
-      Publish_ImuSensor(); //Pub the IMU topic //发布IMU话题    
+      // Publish_Odom();      //Pub the speedometer topic //发布里程计话题
+      // Publish_ImuSensor(); //Pub the IMU topic //发布IMU话题    
       Publish_Voltage();   //Pub the topic of power supply voltage //发布电源电压话题
 
       _Last_Time = _Now; //Record the time and use it to calculate the time interval //记录时间，用于计算时间间隔
@@ -520,8 +520,8 @@ turn_on_robot::turn_on_robot():Sampling_Time(0),Power_voltage(0),Node("wheeltec_
   // private_nh.param<std::string>("gyro_frame_id",    gyro_frame_id,    default_gyro_frame_id); //IMU topics correspond to TF coordinates //IMU话题对应TF坐标
 
   voltage_publisher = this->create_publisher<std_msgs::msg::Float32>("PowerVoltage", 10); //Create a battery-voltage topic publisher //创建电池电压话题发布者
-  odom_publisher    = this->create_publisher<nav_msgs::msg::Odometry>("odom", 50); //Create the odometer topic publisher //创建里程计话题发布者
-  imu_publisher     = this->create_publisher<sensor_msgs::msg::Imu>("imu", 20); //Create an IMU topic publisher //创建IMU话题发布者
+  // odom_publisher    = this->create_publisher<nav_msgs::msg::Odometry>("odom", 50); //Create the odometer topic publisher //创建里程计话题发布者
+  // imu_publisher     = this->create_publisher<sensor_msgs::msg::Imu>("imu", 20); //Create an IMU topic publisher //创建IMU话题发布者
 
   timer_ = this->create_wall_timer(10ms, std::bind(&turn_on_robot::Control, this));
 
