@@ -146,6 +146,8 @@ late_tty=True, output='screen',
         'zed2i.launch.py']), 
         launch_arguments=zed2i_args
     )
+
+    ld.add_action(zed2i_launch)
     
 
     ld.add_action(
