@@ -138,13 +138,13 @@ def generate_launch_description():
 
     zed2i_launch_args = {
             'camera_name' : f"{robot_name}/zed2i",
-            'publish_tf' : 'True',
+            'publish_tf' : 'true',
             'camera_model' : 'zed2i',
         }.items()
     
     zed2i_launch = IncludeLaunchDescription(
                         PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('zed_wrapper'), 'launch'),
+                        get_package_share_directory('zed_wrapper'), 'launch/'),
                         'zed_camera.launch.py']), 
                         launch_arguments=zed2i_launch_args
                     )
