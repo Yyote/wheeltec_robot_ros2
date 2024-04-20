@@ -358,11 +358,15 @@ bool turn_on_robot::Get_Sensor_Data_New()
 
   RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 8");
   if(Receive_Data_Pr[0] == FRAME_HEADER || count>0) //Ensure that the first data in the array is FRAME_HEADER //确保数组第一个数据为FRAME_HEADER
+  {
     count++;
     RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 7");
+  }
   else 
+  {
     RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 6");
-  	count=0;
+    count=0;
+  }
   RCLCPP_INFO_STREAM(this->get_logger(), "Got into flag 5");
   if(count == 24) //Verify the length of the packet //验证数据包的长度
   {
