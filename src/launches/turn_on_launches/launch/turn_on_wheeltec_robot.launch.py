@@ -136,17 +136,19 @@ late_tty=True, output='screen',
     
     ###### ZED 2i
 
-    zed2i_args = {
-        'robot_name' : LaunchConfiguration('robot_name'),
-    }.items()
-
+    zed2i_launch_args = {
+            'camera_name' : LaunchConfiguration('robot_name')+"/zed2i",
+            'publish_tf' : True,
+            'camera_model' : 'zed2i',
+        }.items()
+    
     zed2i_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-        get_package_share_directory('turn_on_launches'), ''),
-        'zed2i.launch.py']), 
-        launch_arguments=zed2i_args
-    )
-
+                        PythonLaunchDescriptionSource([os.path.join(
+                        get_package_share_directory('turn_on_launches'), ''),
+                        '/base_serial.launch.py']), 
+                        launch_arguments=zed2i_launch_args
+                    )
+    
     ld.add_action(zed2i_launch)
     
 
