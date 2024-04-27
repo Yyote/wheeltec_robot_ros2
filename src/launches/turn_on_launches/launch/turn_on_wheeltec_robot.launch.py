@@ -104,16 +104,16 @@ def generate_launch_description():
 
     ##### ASTRA
 
-    # launch2 = GroupAction([    
-    #    PushRosNamespace(LaunchConfiguration('robot_name')),
-    #     IncludeLaunchDescription(
-    #                     XMLLaunchDescriptionSource([os.path.join(
-    #                     get_package_share_directory('astra_camera'), 'launch/'),
-    #                     'astra.launch.xml']), 
-    #                 )]
-    # )
+    launch2 = GroupAction([    
+        PushRosNamespace(LaunchConfiguration('robot_name')),
+        IncludeLaunchDescription(
+                         XMLLaunchDescriptionSource([os.path.join(
+                         get_package_share_directory('astra_camera'), 'launch/'),
+                         'astra.launch.xml']), 
+                     )]
+     )
     
-    # ld.add_action(launch2)
+    ld.add_action(launch2)
     
     ##### RTABMAP
 
@@ -134,22 +134,22 @@ def generate_launch_description():
     # ld.add_action(rtabmap_launch)
     
     ###### ZED 2i
-    robot_name = LaunchConfiguration('robot_name')
-
-    zed2i_launch_args = {
-            'camera_name' : robot_name,
-            'publish_tf' : 'true',
-            'camera_model' : 'zed2i',
-        }.items()
-    
-    zed2i_launch = IncludeLaunchDescription(
-                        PythonLaunchDescriptionSource([os.path.join(
-                        get_package_share_directory('zed_wrapper'), 'launch/'),
-                        'zed_camera.launch.py']), 
-                        launch_arguments=zed2i_launch_args
-                    )
-    
-    ld.add_action(zed2i_launch)
+#    robot_name = LaunchConfiguration('robot_name')
+#
+#    zed2i_launch_args = {
+#            'camera_name' : robot_name,
+#            'publish_tf' : 'true',
+#            'camera_model' : 'zed2i',
+#        }.items()
+#    
+#    zed2i_launch = IncludeLaunchDescription(
+#                        PythonLaunchDescriptionSource([os.path.join(
+#                        get_package_share_directory('zed_wrapper'), 'launch/'),
+#                        'zed_camera.launch.py']), 
+#                        launch_arguments=zed2i_launch_args
+#                    )
+#    
+#    ld.add_action(zed2i_launch)
     
 
     ld.add_action(
