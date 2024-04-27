@@ -12,14 +12,18 @@ from launch_ros.actions import Node, PushRosNamespace
 def generate_launch_description():
     ld = LaunchDescription()
     
-    ld.add_action(
-        DeclareLaunchArgument(
-            name='robot_name',
-            default_value='robot0'
-        )
-    )
+    # ld.add_action(
+    #     DeclareLaunchArgument(
+    #         name='robot_name',
+    #         default_value='robot0'
+    #     )
+    # )
 
+    robot_name = os.getenv('ROBOT_ENV')
     camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES')
+
+    if robot_name or camera_capabilities is None:
+        raise Exception('Environment variables are not set. Please check the list carefully and set them accrodingly.')
 
     print(f'camera_capabilities: {camera_capabilities}')
 
@@ -98,9 +102,9 @@ def generate_launch_description():
             executable='lsn10',
             name='lsn10',
             # emulate_tty=True, output='screen',
-            namespace=LaunchConfiguration('robot_name'),
+            namespace=robot_name,
             parameters=[
-                {'lidar_frame' : LaunchConfiguration('robot_name') + 'laser'},
+                {'lidar_frame' : robot_name + 'laser'},
             ]
         )
     )
@@ -109,7 +113,7 @@ def generate_launch_description():
     if camera_capabilities == 'astra_s':
         ##### ASTRA
         launch2 = GroupAction([    
-            PushRosNamespace(LaunchConfiguration('robot_name')),
+            PushRosNamespace(robot_name),
             IncludeLaunchDescription(
                             XMLLaunchDescriptionSource([os.path.join(
                             get_package_share_directory('astra_camera'), 'launch/'),
@@ -120,7 +124,7 @@ def generate_launch_description():
         ld.add_action(launch2)
     elif camera_capabilities == 'zed2i':
         ###### ZED 2i
-        robot_name = LaunchConfiguration('robot_name')
+        robot_name = robot_name
         
         zed2i_launch_args = {
                 'camera_name' : robot_name,
@@ -141,11 +145,11 @@ def generate_launch_description():
         ##### RTABMAP
 
         # rtabmap_args = {
-        #     'namespace' : LaunchConfiguration('robot_name')
+        #     'namespace' : robot_name
         # }.items()
 
         # rtabmap_launch = GroupAction([    
-        #     PushRosNamespace(LaunchConfiguration('robot_name')),
+        #     PushRosNamespace(robot_name),
         #     IncludeLaunchDescription(
         #                     PythonLaunchDescriptionSource([os.path.join(
         #                     get_package_share_directory('turn_on_launches'), ''),
@@ -163,7 +167,7 @@ def generate_launch_description():
             executable='tank',
             name='tank_tf_publisher',
             # emulate_tty=True, output='screen',
-            namespace=LaunchConfiguration('robot_name'),
+            namespace=robot_name,
             # parameters=[
             #     {'usart_port_name' : '/dev/wheeltec_controller'},
             # ]
@@ -173,7 +177,7 @@ def generate_launch_description():
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {
             'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
-            'robot_name' : LaunchConfiguration('robot_name'),
+            'robot_name' : robot_name,
             }.items()
         launch1 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
@@ -187,7 +191,7 @@ def generate_launch_description():
                 'if_voice_control' : True,
                 'moveit_config' : True,
                 'preset' : True,
-                'robot_name': LaunchConfiguration('robot_name'),
+                'robot_name': robot_name,
                 }.items(),
         ]
         launch2 = IncludeLaunchDescription(
@@ -203,7 +207,7 @@ def generate_launch_description():
     if not ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args2 = {
                 'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
-                'robot_name' : LaunchConfiguration('robot_name'),
+                'robot_name' : robot_name,
             }.items()
         launch2 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
@@ -217,7 +221,7 @@ def generate_launch_description():
     if LaunchConfiguration('navigation') == 'true':
         args={
             'car_mode' : car_mode,
-            'robot_name' : LaunchConfiguration('robot_name'),
+            'robot_name' : robot_name,
             }.items()
         launch_teb_local_planner = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
@@ -230,7 +234,7 @@ def generate_launch_description():
     if LaunchConfiguration('pure3d_nav') == 'true':
         args={
             'car_mode' : car_mode,
-            'robot_name' : LaunchConfiguration('robot_name'),
+            'robot_name' : robot_name,
             }.items()
         launch_teb_local_planner = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
@@ -250,7 +254,7 @@ def generate_launch_description():
         # ld.add_action(robot_model_visualization)
         args={
             'is_cartographer' : LaunchConfiguration('is_cartographer'),
-            'robot_name' : LaunchConfiguration('robot_name'),
+            'robot_name' : robot_name,
             }.items()
         
         robot_pose_ekf = IncludeLaunchDescription(
