@@ -19,6 +19,10 @@ def generate_launch_description():
         )
     )
 
+    camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES')
+
+    print(f'camera_capabilities: {camera_capabilities}')
+
     ld.add_action(
         DeclareLaunchArgument(
             name='car_mode',
@@ -102,54 +106,55 @@ def generate_launch_description():
     )
     
 
-    ##### ASTRA
+    if camera_capabilities == 'astra_s':
+        ##### ASTRA
+        launch2 = GroupAction([    
+            PushRosNamespace(LaunchConfiguration('robot_name')),
+            IncludeLaunchDescription(
+                            XMLLaunchDescriptionSource([os.path.join(
+                            get_package_share_directory('astra_camera'), 'launch/'),
+                            'astra.launch.xml']), 
+                        )]
+        )
+        
+        ld.add_action(launch2)
+    elif camera_capabilities == 'zed2i':
+        ###### ZED 2i
+        robot_name = LaunchConfiguration('robot_name')
+        
+        zed2i_launch_args = {
+                'camera_name' : robot_name,
+                'publish_tf' : 'true',
+                'camera_model' : 'zed2i',
+            }.items()
+        
+        zed2i_launch = IncludeLaunchDescription(
+                            PythonLaunchDescriptionSource([os.path.join(
+                            get_package_share_directory('zed_wrapper'), 'launch/'),
+                            'zed_camera.launch.py']), 
+                            launch_arguments=zed2i_launch_args
+                        )
+        
+        ld.add_action(zed2i_launch)
+        
+        
+        ##### RTABMAP
 
-    launch2 = GroupAction([    
-        PushRosNamespace(LaunchConfiguration('robot_name')),
-        IncludeLaunchDescription(
-                         XMLLaunchDescriptionSource([os.path.join(
-                         get_package_share_directory('astra_camera'), 'launch/'),
-                         'astra.launch.xml']), 
-                     )]
-     )
-    
-    ld.add_action(launch2)
-    
-    ##### RTABMAP
+        # rtabmap_args = {
+        #     'namespace' : LaunchConfiguration('robot_name')
+        # }.items()
 
-    # rtabmap_args = {
-    #     'namespace' : LaunchConfiguration('robot_name')
-    # }.items()
-
-    # rtabmap_launch = GroupAction([    
-    #     PushRosNamespace(LaunchConfiguration('robot_name')),
-    #     IncludeLaunchDescription(
-    #                     PythonLaunchDescriptionSource([os.path.join(
-    #                     get_package_share_directory('turn_on_launches'), ''),
-    #                     'rtabmap_astra_rgbd.launch.py']), 
-    #                     # launch_arguments=rtabmap_args
-    #                 )]
-    # )
+        # rtabmap_launch = GroupAction([    
+        #     PushRosNamespace(LaunchConfiguration('robot_name')),
+        #     IncludeLaunchDescription(
+        #                     PythonLaunchDescriptionSource([os.path.join(
+        #                     get_package_share_directory('turn_on_launches'), ''),
+        #                     'rtabmap_astra_rgbd.launch.py']), 
+        #                     # launch_arguments=rtabmap_args
+        #                 )]
+        # )
     
     # ld.add_action(rtabmap_launch)
-    
-    ###### ZED 2i
-#    robot_name = LaunchConfiguration('robot_name')
-#
-#    zed2i_launch_args = {
-#            'camera_name' : robot_name,
-#            'publish_tf' : 'true',
-#            'camera_model' : 'zed2i',
-#        }.items()
-#    
-#    zed2i_launch = IncludeLaunchDescription(
-#                        PythonLaunchDescriptionSource([os.path.join(
-#                        get_package_share_directory('zed_wrapper'), 'launch/'),
-#                        'zed_camera.launch.py']), 
-#                        launch_arguments=zed2i_launch_args
-#                    )
-#    
-#    ld.add_action(zed2i_launch)
     
 
     ld.add_action(

@@ -175,12 +175,15 @@ Function: Publish voltage-related information
 void turn_on_robot::Publish_Voltage()
 {
     std_msgs::msg::Float32 voltage_msgs; //Define the data type of the power supply voltage publishing topic //定义电源电压发布话题的数据类型
+    std_msgs::msg::Int8 battery_percentage;
     static float Count_Voltage_Pub=0;
     if(Count_Voltage_Pub++>10)
       {
         Count_Voltage_Pub=0;  
         voltage_msgs.data = Power_voltage; //The power supply voltage is obtained //电源供电的电压获取
+        battery_percentage.data = (Power_voltage / 3 - 3.125) / (4.125 - 3.125);
         voltage_publisher->publish(voltage_msgs); //Post the power supply voltage topic unit: V, volt //发布电源电压话题单位：V、伏特
+        battery_percentage_publisher->publish(battery_percentage); //Post the power supply voltage topic unit: V, volt //发布电源电压话题单位：V、伏特
       }
 }
 /**************************************
@@ -520,6 +523,7 @@ turn_on_robot::turn_on_robot():Sampling_Time(0),Power_voltage(0),Node("wheeltec_
   // private_nh.param<std::string>("gyro_frame_id",    gyro_frame_id,    default_gyro_frame_id); //IMU topics correspond to TF coordinates //IMU话题对应TF坐标
 
   voltage_publisher = this->create_publisher<std_msgs::msg::Float32>("PowerVoltage", 10); //Create a battery-voltage topic publisher //创建电池电压话题发布者
+  battery_percentage_publisher = this->create_publisher<std_msgs::msg::Int8>("BatteryPercentage", 10); //Create a battery-voltage topic publisher //创建电池电压话题发布者
   // odom_publisher    = this->create_publisher<nav_msgs::msg::Odometry>("odom", 50); //Create the odometer topic publisher //创建里程计话题发布者
   // imu_publisher     = this->create_publisher<sensor_msgs::msg::Imu>("imu", 20); //Create an IMU topic publisher //创建IMU话题发布者
 
