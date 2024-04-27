@@ -100,7 +100,7 @@ def generate_launch_description():
             # emulate_tty=True, output='screen',
             namespace=LaunchConfiguration('robot_name'),
             parameters=[
-                {'lidar_frame' : f'{robot_name}/laser'},
+                {'lidar_frame' : LaunchConfiguration('robot_name') + 'laser'},
             ]
         )
     )
