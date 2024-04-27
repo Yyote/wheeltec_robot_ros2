@@ -99,9 +99,9 @@ def generate_launch_description():
             name='lsn10',
             # emulate_tty=True, output='screen',
             namespace=LaunchConfiguration('robot_name'),
-            # parameters=[
-            #     {'usart_port_name' : '/dev/wheeltec_controller'},
-            # ]
+            parameters=[
+                {'lidar_frame' : f'{robot_name}/laser'},
+            ]
         )
     )
     
