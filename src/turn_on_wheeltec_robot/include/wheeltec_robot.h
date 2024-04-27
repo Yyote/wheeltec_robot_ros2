@@ -24,7 +24,6 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/int8.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/twist.hpp>
@@ -156,7 +155,7 @@ class turn_on_robot : public rclcpp::Node
 		rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher;
 		rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_publisher;
 		rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr voltage_publisher; //Initialize the topic publisher //初始化话题发布者
-		rclcpp::Publisher<std_msgs::msg::Int8>::SharedPtr battery_percentage_publisher; //Initialize the topic publisher //初始化话题发布者
+		rclcpp::Publisher<std_msgs::msg::Float32>::SharedPtr battery_percentage_publisher; //Initialize the topic publisher //初始化话题发布者
 		void Publish_Odom();      //Pub the speedometer topic //发布里程计话题
 		void Publish_ImuSensor(); //Pub the IMU sensor topic //发布IMU传感器话题
 		void Publish_Voltage();   //Pub the power supply voltage topic //发布电源电压话题

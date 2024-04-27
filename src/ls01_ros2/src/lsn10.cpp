@@ -86,7 +86,7 @@ namespace LS01 {
                             ret = probe_params();
                         if (ret) {
                             RCLCPP_WARN(get_logger(), "invalid packet.");
-                            // sync_state = _sync_t::SYNC1;
+                            sync_state = _sync_t::SYNC1;
                         }
                     } else {
                         buf_ptr += rdlen;
