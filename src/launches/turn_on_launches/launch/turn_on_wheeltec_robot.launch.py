@@ -19,7 +19,7 @@ def generate_launch_description():
     #     )
     # )
 
-    robot_name = os.getenv('ROBOT_ENV')
+    robot_name = os.getenv('ROBOT_NAME')
     camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES')
 
     if robot_name or camera_capabilities is None:
