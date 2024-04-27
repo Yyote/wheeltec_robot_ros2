@@ -181,7 +181,7 @@ void turn_on_robot::Publish_Voltage()
       {
         Count_Voltage_Pub=0;  
         voltage_msgs.data = Power_voltage; //The power supply voltage is obtained //电源供电的电压获取
-        battery_percentage.data = (Power_voltage / 3 - 3.125) / (4.125 - 3.125);
+        battery_percentage.data = uint8_t((Power_voltage / 3 - 3.125) / (4.125 - 3.125)); // Got the equation from here --> https://forum.electricunicycle.org/topic/30391-turning-voltage-into-battery-level-by-percentage/#:~:text=Percentage%20%3D%20(Actual%20Voltage%20-,multiply%20these%20voltages%20with%2016%2C20%2C24%2C
         voltage_publisher->publish(voltage_msgs); //Post the power supply voltage topic unit: V, volt //发布电源电压话题单位：V、伏特
         battery_percentage_publisher->publish(battery_percentage); //Post the power supply voltage topic unit: V, volt //发布电源电压话题单位：V、伏特
       }
