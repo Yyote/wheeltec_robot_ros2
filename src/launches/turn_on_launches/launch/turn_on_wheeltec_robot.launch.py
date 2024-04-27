@@ -22,7 +22,7 @@ def generate_launch_description():
     robot_name = os.getenv('ROBOT_NAME')
     camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES')
 
-    if robot_name or camera_capabilities is None:
+    if robot_name is None or camera_capabilities is None:
         raise Exception('Environment variables are not set. Please check the list carefully and set them accrodingly.')
 
     print(f'camera_capabilities: {camera_capabilities}')
