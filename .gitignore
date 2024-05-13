@@ -2,3 +2,4 @@ build/
 install/
 log/
 .vscode/
+EXPERIMENTAL_USE_PKGS/
