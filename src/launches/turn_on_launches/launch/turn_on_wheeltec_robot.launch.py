@@ -11,19 +11,16 @@ from launch_ros.actions import Node, PushRosNamespace
 
 def generate_launch_description():
     ld = LaunchDescription()
-    
-    # ld.add_action(
-    #     DeclareLaunchArgument(
-    #         name='robot_name',
-    #         default_value='robot0'
-    #     )
-    # )
 
-    robot_name = os.getenv('ROBOT_NAME')
-    camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES')
+    """
+    Here we get the values of the necessary environment variables,
+    that users have to set manually accroding to their robot group parameters.
+    """
+    robot_name = os.getenv('ROBOT_NAME') # This will be used as a prefix in many places like node namespaces, topic prefixes, tf prefixes, etc.
+    camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES') # This defines the pipeline that the robot uses to get pointclouds and visual odometry
 
     if robot_name is None or camera_capabilities is None:
-        raise Exception('Environment variables are not set. Please check the list carefully and set them accrodingly.')
+        raise Exception('Environment variables are not set. Please check the list carefully and set them accordingly.')
 
     print(f'camera_capabilities: {camera_capabilities}')
 
@@ -31,15 +28,6 @@ def generate_launch_description():
         DeclareLaunchArgument(
             name='car_mode',
             default_value='mini_tank',
-    #    doc="opt: mini_akm,senior_akm,top_akm_bs,top_akm_dl,
-    #              mini_mec,senior_mec_bs,senior_mec_dl,top_mec_bs,top_mec_dl,senior_mec_EightDrive,top_mec_EightDrive,
-    #              flagship_mec_bs,flagship_mec_dl,
-    #              mini_omni,senior_omni,top_omni,
-    #              mini_4wd,senior_4wd_bs,senior_4wd_dl,top_4wd_bs,top_4wd_dl,flagship_4wd_bs,flagship_4wd_dl,
-    #              mini_tank,mini_diff,senior_diff,four_wheel_diff_bs,four_wheel_diff_dl,flagship_four_wheel_diff_dl,flagship_four_wheel_diff_bs, 
-    #              brushless_senior_diff, B585_balance
-    #              mini_tank_moveit_four,mini_4wd_moveit_four,mini_mec_moveit_four,
-    #              mini_mec_moveit_six,mini_4wd_moveit_six"
         )
     )
     ld.add_action(
@@ -78,9 +66,10 @@ def generate_launch_description():
             default_value='odom_combined'
         )
     )
-    # car_mode = 'mini_mec_moveit_six'
+
     car_mode = LaunchConfiguration('car_mode')
     if_voice = LaunchConfiguration('if_voice')
+
     if car_mode == 'mini_akm' or car_mode == 'senior_akm' or car_mode == 'top_akm_bs' or car_mode == 'top_akm_dl':
         ld.add_action(
             DeclareLaunchArgument(
@@ -96,6 +85,9 @@ def generate_launch_description():
             )
         )
 
+    """
+    LSN10 lidar launch. More lidars have to be added
+    """
     ld.add_action(
         Node(
             package='ls01',
@@ -143,7 +135,9 @@ def generate_launch_description():
         
         
         ##### RTABMAP
-
+        """
+        Most probably wont be used because loses navigation too often
+        """
         # rtabmap_args = {
         #     'namespace' : robot_name
         # }.items()
