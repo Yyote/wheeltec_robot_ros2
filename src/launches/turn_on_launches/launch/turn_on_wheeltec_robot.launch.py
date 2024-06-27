@@ -6,7 +6,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription, GroupAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
-from launch_ros.actions import Node, PushRosNamespace
+from launch_ros.actions import Node, PushRosNamespace, SetRemap
 
 
 def generate_launch_description():
@@ -162,12 +162,16 @@ def generate_launch_description():
         
         print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
-        cslam_launch = IncludeLaunchDescription(
-                            PythonLaunchDescriptionSource([os.path.join(
-                            get_package_share_directory('turn_on_launches'), ''),
-                            'swarm_slam.launch.py']), 
-                            launch_arguments=cslam_args
-                        )
+        cslam_launch = GroupAction([
+            SetRemap(src=f'/{robot_name}/depth/image', dst=f'/{robot_name}/zed_node/depth/image'),
+            SetRemap(src=f'/{robot_name}/odom', dst=f'/{robot_name}/zed_node/odom'),
+            IncludeLaunchDescription(
+                                PythonLaunchDescriptionSource([os.path.join(
+                                get_package_share_directory('turn_on_launches'), ''),
+                                'swarm_slam.launch.py']), 
+                                launch_arguments=cslam_args
+                            ),
+        ])
         
         ld.add_action(cslam_launch)
 
