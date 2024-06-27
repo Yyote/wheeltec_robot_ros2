@@ -160,7 +160,7 @@ def generate_launch_description():
 
         cslam_launch = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
-                            get_package_share_directory('turn_on_launches'), 'launch/'),
+                            get_package_share_directory('turn_on_launches'), ''),
                             'swarm_slam.launch.py']), 
                             launch_arguments=cslam_args
                         )
