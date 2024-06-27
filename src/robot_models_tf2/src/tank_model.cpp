@@ -18,7 +18,7 @@ class TankModelTFBroadcaster : public rclcpp::Node
     {
         timer = this->create_wall_timer(20ms, std::bind(&TankModelTFBroadcaster::timer_callback, this));
         broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
-        prefix = "robot0";
+        prefix = "r0";
     }
 
 

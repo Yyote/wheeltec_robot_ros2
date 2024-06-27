@@ -100,7 +100,7 @@ def main():
     node = Node("turtlebot_teleop")
     
     # rospy.init_node('turtlebot_teleop') #创建ROS节点
-    pub = node.create_publisher(Twist, '/robot0/cmd_vel', 10) #创建速度话题发布者，'~cmd_vel'='节点名/cmd_vel'
+    pub = node.create_publisher(Twist, '/r0/cmd_vel', 10) #创建速度话题发布者，'~cmd_vel'='节点名/cmd_vel'
 
     x      = 0   #前进后退方向
     th     = 0   #转向/横向移动方向

@@ -14,7 +14,7 @@ def generate_launch_description():
     ld.add_action(
         DeclareLaunchArgument(
             name='robot_name',
-            default_value='robot0'
+            default_value='r0'
         )
     )
 
