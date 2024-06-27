@@ -169,8 +169,8 @@ def generate_launch_description():
             SetRemap(src=f'/{robot_name}/color/image', dst=f'/{robot_name}/zed_node/rgb/image_rect_color'),
             SetRemap(src=f'/{robot_name}/left/camera_info', dst=f'/{robot_name}/zed_node/left/camera_info'),
             SetRemap(src=f'/{robot_name}/left/image_rect', dst=f'/{robot_name}/zed_node/left/image_rect_color'),
-            SetRemap(src=f'/{robot_name}/right/camera_info', dst=f'/{robot_name}/zed_node/left/camera_info'),
-            SetRemap(src=f'/{robot_name}/right/image_rect', dst=f'/{robot_name}/zed_node/left/image_rect_color'),
+            SetRemap(src=f'/{robot_name}/right/camera_info', dst=f'/{robot_name}/zed_node/right/camera_info'),
+            SetRemap(src=f'/{robot_name}/right/image_rect', dst=f'/{robot_name}/zed_node/right/image_rect_color'),
             IncludeLaunchDescription(
                                 PythonLaunchDescriptionSource([os.path.join(
                                 get_package_share_directory('turn_on_launches'), ''),
