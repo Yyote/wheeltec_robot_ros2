@@ -114,6 +114,27 @@ def generate_launch_description():
         )
         
         ld.add_action(launch2)
+
+        ##### RTABMAP
+        """
+        Most probably wont be used because loses navigation too often
+        """
+        rtabmap_args = {
+            'namespace' : robot_name
+        }.items()
+
+        rtabmap_launch = GroupAction([    
+            PushRosNamespace(robot_name),
+            IncludeLaunchDescription(
+                            PythonLaunchDescriptionSource([os.path.join(
+                            get_package_share_directory('turn_on_launches'), ''),
+                            'rtabmap_astra_rgbd.launch.py']), 
+                            # launch_arguments=rtabmap_args
+                        )]
+        )
+        
+        ld.add_action(rtabmap_launch)
+
     elif camera_capabilities == 'zed2i':
         ###### ZED 2i
         robot_name = robot_name
@@ -133,27 +154,18 @@ def generate_launch_description():
         
         ld.add_action(zed2i_launch)
         
-        
-        ##### RTABMAP
-        """
-        Most probably wont be used because loses navigation too often
-        """
-        # rtabmap_args = {
-        #     'namespace' : robot_name
-        # }.items()
+        cslam_args = {
+                'namespace' : robot_name,
+            }.items()
 
-        # rtabmap_launch = GroupAction([    
-        #     PushRosNamespace(robot_name),
-        #     IncludeLaunchDescription(
-        #                     PythonLaunchDescriptionSource([os.path.join(
-        #                     get_package_share_directory('turn_on_launches'), ''),
-        #                     'rtabmap_astra_rgbd.launch.py']), 
-        #                     # launch_arguments=rtabmap_args
-        #                 )]
-        # )
-    
-    # ld.add_action(rtabmap_launch)
-    
+        cslam_launch = IncludeLaunchDescription(
+                            PythonLaunchDescriptionSource([os.path.join(
+                            get_package_share_directory('turn_on_launches'), 'launch/'),
+                            'swarm_slam.launch.py']), 
+                            launch_arguments=cslam_args
+                        )
+        
+        ld.add_action(cslam_launch)
 
     ld.add_action(
         Node(
