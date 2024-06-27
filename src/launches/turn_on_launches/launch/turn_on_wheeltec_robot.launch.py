@@ -156,7 +156,11 @@ def generate_launch_description():
         
         cslam_args = {
                 'namespace' : robot_name,
+                'cslam_config_file' : 'zed2i_swarm_slam.yaml',
+                'robot_id' : '0'
             }.items()
+        
+        print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
         cslam_launch = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
