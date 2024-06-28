@@ -156,30 +156,36 @@ def generate_launch_description():
         
         cslam_args = {
                 'namespace' : robot_name,
-                'cslam_config_file' : 'zed2i_swarm_slam.yaml',
+                'cslam_config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'robot_id' : '0'
             }.items()
         
         print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
-        cslam_launch = GroupAction([
-            SetRemap(src=f'/{robot_name}/depth/image', dst=f'/{robot_name}/zed_node/depth/depth_registered'),
-            SetRemap(src=f'/{robot_name}/odom', dst=f'/{robot_name}/zed_node/odom'),
-            SetRemap(src=f'/{robot_name}/color/camera_info', dst=f'/{robot_name}/zed_node/rgb/camera_info'),
-            SetRemap(src=f'/{robot_name}/color/image', dst=f'/{robot_name}/zed_node/rgb/image_rect_color'),
-            SetRemap(src=f'/{robot_name}/left/camera_info', dst=f'/{robot_name}/zed_node/left/camera_info'),
-            SetRemap(src=f'/{robot_name}/left/image_rect', dst=f'/{robot_name}/zed_node/left/image_rect_color'),
-            SetRemap(src=f'/{robot_name}/right/camera_info', dst=f'/{robot_name}/zed_node/right/camera_info'),
-            SetRemap(src=f'/{robot_name}/right/image_rect', dst=f'/{robot_name}/zed_node/right/image_rect_color'),
-            IncludeLaunchDescription(
-                                PythonLaunchDescriptionSource([os.path.join(
-                                get_package_share_directory('turn_on_launches'), ''),
-                                'swarm_slam.launch.py']), 
-                                launch_arguments=cslam_args
-                            ),
-        ])
+        # cslam_launch = GroupAction([
+        #     SetRemap(src=f'/{robot_name}/depth/image', dst=f'/{robot_name}/zed_node/depth/depth_registered'),
+        #     SetRemap(src=f'/{robot_name}/odom', dst=f'/{robot_name}/zed_node/odom'),
+        #     SetRemap(src=f'/{robot_name}/color/camera_info', dst=f'/{robot_name}/zed_node/rgb/camera_info'),
+        #     SetRemap(src=f'/{robot_name}/color/image', dst=f'/{robot_name}/zed_node/rgb/image_rect_color'),
+        #     SetRemap(src=f'/{robot_name}/left/camera_info', dst=f'/{robot_name}/zed_node/left/camera_info'),
+        #     SetRemap(src=f'/{robot_name}/left/image_rect', dst=f'/{robot_name}/zed_node/left/image_rect_color'),
+        #     SetRemap(src=f'/{robot_name}/right/camera_info', dst=f'/{robot_name}/zed_node/right/camera_info'),
+        #     SetRemap(src=f'/{robot_name}/right/image_rect', dst=f'/{robot_name}/zed_node/right/image_rect_color'),
+        #     IncludeLaunchDescription(
+        #                         PythonLaunchDescriptionSource([os.path.join(
+        #                         get_package_share_directory('turn_on_launches'), ''),
+        #                         'swarm_slam.launch.py']), 
+        #                         launch_arguments=cslam_args
+        #                     ),
+        # ])
         
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
+        cslam_launch = IncludeLaunchDescription(
+                            PythonLaunchDescriptionSource([os.path.join(
+                            get_package_share_directory('turn_on_launches'), ''),
+                            'swarm_slam_stereo.launch.py']), 
+                            launch_arguments=cslam_args
+                        ),
 
     ld.add_action(
         Node(
