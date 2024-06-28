@@ -6,7 +6,7 @@
       left_camera_info_topic: "zed_node/left/camera_info"
       right_camera_info_topic: "zed_node/right/camera_info"
       odom_topic: "zed_node/odom"
-      sensor_base_frame_id: "r0_camera_center"
+      sensor_base_frame_id: "r0_camera_link"
       sensor_type: "stereo"
       inter_robot_loop_closure_budget: 1
       inter_robot_detection_period_sec: 5
@@ -46,4 +46,6 @@
       enable_sparsification_comparison: false
     visualization:
       enable: true
-      publishing_period_ms: 1000
+      publishing_period_ms: 0.5
+      voxel_size: 0.2
+      max_range: 4.0
