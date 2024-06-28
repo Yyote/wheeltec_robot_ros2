@@ -35,8 +35,8 @@
       init_delay_sec: 5.0
       heartbeat_period_sec: 1.0
     backend:
-      pose_graph_optimization_start_period_ms: 500
-      pose_graph_optimization_loop_period_ms: 50
+      pose_graph_optimization_start_period_ms: 10000
+      pose_graph_optimization_loop_period_ms: 100
       max_waiting_time_sec: 60
       enable_broadcast_tf_frames: true
     evaluation:
@@ -47,6 +47,6 @@
       enable_sparsification_comparison: false
     visualization:
       enable: true
-      publishing_period_ms: 1000
-      # voxel_size: 0.2
-      # max_range: 4.0
+      publishing_period_ms: 500
+      voxel_size: 0.2
+      max_range: 4.0
