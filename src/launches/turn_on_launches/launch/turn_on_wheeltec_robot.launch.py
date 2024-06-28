@@ -158,7 +158,7 @@ def generate_launch_description():
                 'namespace' : robot_name,
                 'cslam_config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'robot_id' : '0'
-            }
+            }.items()
         
         print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
@@ -180,14 +180,14 @@ def generate_launch_description():
         # ])
         
         # ld.add_action(cslam_launch)
-        cslam_launch = IncludeLaunchDescription(
-                            PythonLaunchDescriptionSource([os.path.join(
-                            get_package_share_directory('turn_on_launches'), ''),
-                            'swarm_slam_stereo.launch.py']), 
-                            launch_arguments=cslam_args
-                        ),
+        # cslam_launch = IncludeLaunchDescription(
+        #                     PythonLaunchDescriptionSource([os.path.join(
+        #                     get_package_share_directory('turn_on_launches'), ''),
+        #                     'swarm_slam_stereo.launch.py']), 
+        #                     launch_arguments=cslam_args
+        #                 ),
     
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
 
     ld.add_action(
         Node(
