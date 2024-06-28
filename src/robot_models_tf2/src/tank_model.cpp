@@ -31,7 +31,7 @@ class TankModelTFBroadcaster : public rclcpp::Node
     void timer_callback() // Сама функция колбэка
     {
         TransformStamped base2cam_transform;
-        base2cam_transform.header.frame_id = prefix + "/camera_color_optical_frame";
+        base2cam_transform.header.frame_id = prefix + "_camera_center";
         base2cam_transform.header.stamp = this->get_clock()->now();
         base2cam_transform.child_frame_id = prefix + "/base_link";
         
