@@ -158,7 +158,7 @@ def generate_launch_description():
                 'namespace' : robot_name,
                 'cslam_config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'robot_id' : '0'
-            }.items()
+            }
         
         print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
