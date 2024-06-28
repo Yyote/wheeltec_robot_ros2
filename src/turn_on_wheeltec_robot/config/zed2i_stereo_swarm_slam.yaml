@@ -47,5 +47,5 @@
     visualization:
       enable: true
       publishing_period_ms: 0.5
-      voxel_size: 0.2
-      max_range: 4.0
+      # voxel_size: 0.2
+      # max_range: 4.0
