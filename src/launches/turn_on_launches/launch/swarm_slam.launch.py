@@ -19,7 +19,7 @@ def launch_setup(context, *args, **kwargs):
             os.path.join(get_package_share_directory("cslam_experiments"),
                          "launch", "cslam", "cslam_rgbd.launch.py")),
         launch_arguments={
-            "config_path": os.path.join(get_package_share_directory("turn_on_launches"), "config/"),
+            "config_path": os.path.join(get_package_share_directory("turn_on_wheeltec_robot"), "config/"),
             "config_file": LaunchConfiguration('cslam_config_file').perform(context),
             "robot_id": LaunchConfiguration('robot_id').perform(context),
             "namespace": "/r" + LaunchConfiguration('robot_id').perform(context),

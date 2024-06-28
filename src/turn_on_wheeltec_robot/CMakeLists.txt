@@ -81,5 +81,9 @@ DESTINATION lib/${PROJECT_NAME}/)
 
 ament_export_targets(wheeltec_robot_node HAS_LIBRARY_TARGET)
 
+install(DIRECTORY 
+  config
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 ament_package()
