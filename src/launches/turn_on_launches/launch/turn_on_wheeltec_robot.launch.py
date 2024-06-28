@@ -180,16 +180,16 @@ def generate_launch_description():
         # ])
         
         # ld.add_action(cslam_launch)
-        cslam_launch = GroupAction([
-                IncludeLaunchDescription(
-                                PythonLaunchDescriptionSource([os.path.join(
-                                get_package_share_directory('turn_on_launches'), ''),
-                                'swarm_slam_stereo.launch.py']), 
-                                launch_arguments=cslam_args
-                            ),
-        ])
+        # cslam_launch = GroupAction([
+        #         IncludeLaunchDescription(
+        #                         PythonLaunchDescriptionSource([os.path.join(
+        #                         get_package_share_directory('turn_on_launches'), ''),
+        #                         'swarm_slam_stereo.launch.py']), 
+        #                         launch_arguments=cslam_args
+        #                     ),
+        # ])
 
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
 
     ld.add_action(
         Node(
