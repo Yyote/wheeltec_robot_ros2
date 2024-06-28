@@ -1,45 +1,46 @@
 /**:
   ros__parameters:
     frontend:
-      left_image_topic: "/zed_node/left/image_rect_color"
-      right_image_topic: "/zed_node/right/image_rect_color"
-      left_camera_info_topic: "/zed_node/left/camera_info"
-      right_camera_info_topic: "/zed_node/right/camera_info"
+      color_image_topic: "/zed_node/rgb/image_rect_color"
+      color_camera_info: "/zed_node/rgb/camera_info"
+      depth_image_topic: "/zed_node/depth/depth_registered"      
       odom_topic: "/zed_node/odom"
       sensor_base_frame_id: "camera_color_optical_frame"
-      sensor_type: "stereo"
+      sensor_type: "rgbd"
       inter_robot_loop_closure_budget: 1
-      inter_robot_detection_period_sec: 5
-      max_queue_size: 10
+      inter_robot_detection_period_sec: 0.5
+      max_queue_size: 100
       similarity_threshold: 0.8
       global_descriptors_topic: "global_descriptors"
       image_crop_size: 376
-      intra_loop_min_inbetween_keyframes: 20
-      pnp_min_inliers: 20
-      detection_publication_period_sec: 1.0
+      intra_loop_min_inbetween_keyframes: 8
+      pnp_min_inliers: 100
+      detection_publication_period_sec: 0.2
       detection_publication_max_elems_per_msg: 10
       enable_intra_robot_loop_closures: true
-      keyframe_generation_ratio_threshold: 1.0
+      keyframe_generation_ratio_threshold: 0.99
+      # keyframe_generation_ratio_distance: 1
       use_vertex_cover_selection: true
       map_manager_process_period_ms: 100
       enable_sparsification: true
       global_descriptor_technique: "cosplace"
-      nn_checkpoint: "models/resnet101_512.pth"
+      nn_checkpoint: "models/resnet18_64.pth"
+      # global_descriptor_technique: "scancontext"
       cosplace:
-        backbone: "resnet101"
-        descriptor_dim: 512
+        backbone: "resnet18"
+        descriptor_dim: 64
     neighbor_management:
       enable_neighbor_monitoring: true
       max_heartbeat_delay_sec: 5.0
       init_delay_sec: 5.0
       heartbeat_period_sec: 1.0
     backend:
-      pose_graph_optimization_start_period_ms: 10000
-      pose_graph_optimization_loop_period_ms: 100
+      pose_graph_optimization_start_period_ms: 500
+      pose_graph_optimization_loop_period_ms: 50
       max_waiting_time_sec: 60
       enable_broadcast_tf_frames: true
     evaluation:
-      enable_logs: false
+      enable_logs: true
       log_folder: "results"
       enable_gps_recording: false
       gps_topic: "gps/fix"
@@ -47,3 +48,5 @@
     visualization:
       enable: true
       publishing_period_ms: 1000
+      # voxel_size: 0.2
+      # max_range: 4.0

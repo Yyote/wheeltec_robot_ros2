@@ -23,9 +23,9 @@
       use_vertex_cover_selection: true
       map_manager_process_period_ms: 100
       enable_sparsification: true
-      # global_descriptor_technique: "cosplace"
-      global_descriptor_technique: "scancontext"
-      # nn_checkpoint: "models/resnet18_64.pth"
+      global_descriptor_technique: "cosplace"
+      nn_checkpoint: "models/resnet18_64.pth"
+      # global_descriptor_technique: "scancontext"
       cosplace:
         backbone: "resnet18"
         descriptor_dim: 64

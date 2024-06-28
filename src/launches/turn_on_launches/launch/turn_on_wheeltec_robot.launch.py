@@ -163,7 +163,7 @@ def generate_launch_description():
         print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
         cslam_launch = GroupAction([
-            SetRemap(src=f'/{robot_name}/depth/image', dst=f'/{robot_name}/zed_node/depth/image'),
+            SetRemap(src=f'/{robot_name}/depth/image', dst=f'/{robot_name}/zed_node/depth/depth_registered'),
             SetRemap(src=f'/{robot_name}/odom', dst=f'/{robot_name}/zed_node/odom'),
             SetRemap(src=f'/{robot_name}/color/camera_info', dst=f'/{robot_name}/zed_node/rgb/camera_info'),
             SetRemap(src=f'/{robot_name}/color/image', dst=f'/{robot_name}/zed_node/rgb/image_rect_color'),
