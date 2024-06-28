@@ -156,7 +156,7 @@ def generate_launch_description():
         
         cslam_args = {
                 'namespace' : robot_name,
-                'cslam_config_file' : 'zed2i_stereo_swarm_slam.yaml',
+                'config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'robot_id' : '0'
             }.items()
         
