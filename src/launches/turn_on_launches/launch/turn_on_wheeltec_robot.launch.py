@@ -139,6 +139,15 @@ def generate_launch_description():
         ###### ZED 2i
         robot_name = robot_name
         
+        depth2base_link = Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            exec_name="static_transform_depth_to_base_link",
+            arguments=["0", "0", "0", "0", "0", "0", "map", "robot0_map"]
+        )
+
+        ld.add_action(depth2base_link)
+
         zed2i_launch_args = {
                 'camera_name' : robot_name,
                 'publish_tf' : 'true',
