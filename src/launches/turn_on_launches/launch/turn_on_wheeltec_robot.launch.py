@@ -186,6 +186,8 @@ def generate_launch_description():
                             'swarm_slam_stereo.launch.py']), 
                             launch_arguments=cslam_args
                         ),
+    
+        ld.add_action(cslam_launch)
 
     ld.add_action(
         Node(
