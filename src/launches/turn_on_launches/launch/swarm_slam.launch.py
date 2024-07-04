@@ -43,7 +43,7 @@ def generate_launch_description():
         DeclareLaunchArgument('robot_id', default_value='0'),
         DeclareLaunchArgument('max_nb_robots', default_value='5'),
         DeclareLaunchArgument('cslam_config_file',
-                              default_value='zed2i_swarm_slam.yaml',
+                              default_value='zed2i_rgbd_swarm_slam.yaml',
                               description=''),
         OpaqueFunction(function=launch_setup)
     ])

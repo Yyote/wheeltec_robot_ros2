@@ -165,7 +165,8 @@ def generate_launch_description():
         
         cslam_args = {
                 'namespace' : robot_name,
-                'config_file' : 'zed2i_stereo_swarm_slam.yaml',
+                'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
+                # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
                 'robot_id' : '0'
             }.items()
@@ -194,7 +195,8 @@ def generate_launch_description():
                 IncludeLaunchDescription(
                                 PythonLaunchDescriptionSource([os.path.join(
                                 get_package_share_directory('turn_on_launches'), ''),
-                                'swarm_slam_stereo.launch.py']), 
+                                # 'swarm_slam_stereo.launch.py']), 
+                                'swarm_slam.launch.py']), 
                                 launch_arguments=cslam_args
                             ),
         ])
