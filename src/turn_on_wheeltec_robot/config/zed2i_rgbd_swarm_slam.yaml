@@ -44,6 +44,6 @@
       enable_sparsification_comparison: false
     visualization:
       enable: true
-      publishing_period_ms: 500
-      voxel_size: 0.2
+      publishing_period_ms: 50
+      voxel_size: 0.01
       max_range: 4.0
