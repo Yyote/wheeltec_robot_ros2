@@ -192,7 +192,7 @@ def generate_launch_description():
         
         # ld.add_action(cslam_launch)
         cslam_launch = GroupAction([
-                SetRemap(src="/color/camera_info", dst="/zed_node/rgb/camera_info"),
+                SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
                 IncludeLaunchDescription(
                                 PythonLaunchDescriptionSource([os.path.join(
                                 get_package_share_directory('turn_on_launches'), ''),
