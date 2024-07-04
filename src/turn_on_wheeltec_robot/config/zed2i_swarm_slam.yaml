@@ -7,7 +7,7 @@
       odom_topic: "zed_node/odom"
       # sensor_base_frame_id: "base_link"
       # sensor_base_frame_id: "camera_color_optical_frame"
-      sensor_base_frame_id: "*r0_camera_link"
+      sensor_base_frame_id: "r0_camera_link"
       sensor_type: "rgbd"
       inter_robot_loop_closure_budget: 1
       inter_robot_detection_period_sec: 1
