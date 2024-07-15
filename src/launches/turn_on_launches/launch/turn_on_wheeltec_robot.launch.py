@@ -16,7 +16,11 @@ def generate_launch_description():
     Here we get the values of the necessary environment variables,
     that users have to set manually accroding to their robot group parameters.
     """
-    robot_name = os.getenv('ROBOT_NAME') # This will be used as a prefix in many places like node namespaces, topic prefixes, tf prefixes, etc.
+
+    robot_pref = os.getenv('ROBOT_NAME')
+    robot_id = f"{os.getenv('ROBOT_ID')}"
+
+    robot_name = robot_pref + robot_id # This will be used as a prefix in many places like node namespaces, topic prefixes, tf prefixes, etc.
     camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES') # This defines the pipeline that the robot uses to get pointclouds and visual odometry
 
     if robot_name is None or camera_capabilities is None:
@@ -156,6 +160,14 @@ def generate_launch_description():
         ld.add_action(orb_slam_3_node)
 
         # ## 2.1.3 C-SLAM
+        cslam_args = {
+                'namespace' : robot_name,
+                'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
+                # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
+                'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
+                'robot_id' : robot_id
+            }.items()
+
         # cslam_launch = GroupAction([
         #         SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
         #         IncludeLaunchDescription(
@@ -205,10 +217,8 @@ def generate_launch_description():
                 'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
                 # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
-                'robot_id' : '0'
+                'robot_id' : robot_id
             }.items()
-        
-        print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
         cslam_launch = GroupAction([
                 SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
