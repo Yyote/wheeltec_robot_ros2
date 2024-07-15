@@ -1,0 +1,9 @@
+repositories:
+  src/ros2_orb_slam3:
+    type: git
+    url: https://github.com/Yyote/ros2_orb_slam3.git
+    version: main
+  src/octomap_server2:
+    type: git
+    url: https://github.com/Yyote/octomap_server2.git
+    version: master

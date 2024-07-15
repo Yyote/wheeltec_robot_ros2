@@ -3,4 +3,7 @@ install/
 log/
 .vscode/
 EXPERIMENTAL_USE_PKGS/
-# src/ros2_orb_slam3/
+
+# Packages, imported from git
+src/ros2_orb_slam3/
+src/octomap_server2/
