@@ -104,8 +104,9 @@ def generate_launch_description():
     
 
     # 2. Conditional computer vision hardware and software launches 
+    # 2.1 Orbbec Astra S 
     if camera_capabilities == 'astra_s':
-        ## 2.1 Orbbec Astra S 
+        ## 2.1.1 Orbbec Astra S launch 
         launch2 = GroupAction([    
             PushRosNamespace(robot_name),
             IncludeLaunchDescription(
@@ -137,7 +138,7 @@ def generate_launch_description():
         
         # ld.add_action(rtabmap_launch)
 
-        ## 2.2 Visual odometry node
+        ## 2.1.2 Visual odometry node
         orb_slam_3_node = Node(
             package="ros2_orb_slam3",
             executable="rgbd_node",
@@ -154,10 +155,25 @@ def generate_launch_description():
 
         ld.add_action(orb_slam_3_node)
 
+        # ## 2.1.3 C-SLAM
+        # cslam_launch = GroupAction([
+        #         SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
+        #         IncludeLaunchDescription(
+        #                         PythonLaunchDescriptionSource([os.path.join(
+        #                         get_package_share_directory('turn_on_launches'), ''),
+        #                         # 'swarm_slam_stereo.launch.py']), 
+        #                         'swarm_slam.launch.py']), 
+        #                         launch_arguments=cslam_args
+        #                     ),
+        # ])
+
+        # ld.add_action(cslam_launch)
+
+    # 2.2 ZED2i
     elif camera_capabilities == 'zed2i':
-        ###### ZED 2i
         robot_name = robot_name
         
+        ## 2.2.1 TF from robot map to C-SLAM map
         depth2base_link = Node(
             package="tf2_ros",
             executable="static_transform_publisher",
@@ -167,6 +183,7 @@ def generate_launch_description():
 
         ld.add_action(depth2base_link)
 
+        ## 2.2.2 ZED 2i launch
         zed2i_launch_args = {
                 'camera_name' : robot_name,
                 'publish_tf' : 'true',
@@ -182,6 +199,7 @@ def generate_launch_description():
         
         ld.add_action(zed2i_launch)
         
+        # ## 2.2.3 C-SLAM
         cslam_args = {
                 'namespace' : robot_name,
                 'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
@@ -192,24 +210,6 @@ def generate_launch_description():
         
         print('WARNING! CSLAM ARGS CONTAIN HARDCODED VALUE ZERO FOR ROBOT ID!')
 
-        # cslam_launch = GroupAction([
-        #     SetRemap(src=f'/{robot_name}/depth/image', dst=f'/{robot_name}/zed_node/depth/depth_registered'),
-        #     SetRemap(src=f'/{robot_name}/odom', dst=f'/{robot_name}/zed_node/odom'),
-        #     SetRemap(src=f'/{robot_name}/color/camera_info', dst=f'/{robot_name}/zed_node/rgb/camera_info'),
-        #     SetRemap(src=f'/{robot_name}/color/image', dst=f'/{robot_name}/zed_node/rgb/image_rect_color'),
-        #     SetRemap(src=f'/{robot_name}/left/camera_info', dst=f'/{robot_name}/zed_node/left/camera_info'),
-        #     SetRemap(src=f'/{robot_name}/left/image_rect', dst=f'/{robot_name}/zed_node/left/image_rect_color'),
-        #     SetRemap(src=f'/{robot_name}/right/camera_info', dst=f'/{robot_name}/zed_node/right/camera_info'),
-        #     SetRemap(src=f'/{robot_name}/right/image_rect', dst=f'/{robot_name}/zed_node/right/image_rect_color'),
-        #     IncludeLaunchDescription(
-        #                         PythonLaunchDescriptionSource([os.path.join(
-        #                         get_package_share_directory('turn_on_launches'), ''),
-        #                         'swarm_slam.launch.py']), 
-        #                         launch_arguments=cslam_args
-        #                     ),
-        # ])
-        
-        # ld.add_action(cslam_launch)
         cslam_launch = GroupAction([
                 SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
                 IncludeLaunchDescription(

@@ -53,3 +53,13 @@ colcon build --event-handlers  console_direct+  --cmake-args  -DCMAKE_BUILD_TYPE
 colcon build
 ```
 
+# Setup robot info
+
+If the workspace is installed on the robot, you should setup the required robot info in the `/path/to/wheeltec_robot_ros2/robot_info.sh`. After that edit the following line and add it to your `.bashrc`:
+
+```
+source /path/to/wheeltec_robot_ros2/robot_info.sh
+```
+
+
+
