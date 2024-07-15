@@ -24,6 +24,8 @@ def generate_launch_description():
 
     print(f'camera_capabilities: {camera_capabilities}')
 
+
+    # 0. Declaration of the necessary launch arguments
     ld.add_action(
         DeclareLaunchArgument(
             name='car_mode',
@@ -70,6 +72,7 @@ def generate_launch_description():
     car_mode = LaunchConfiguration('car_mode')
     if_voice = LaunchConfiguration('if_voice')
 
+    ## 0.1 Declaration of coditional arguments
     if car_mode == 'mini_akm' or car_mode == 'senior_akm' or car_mode == 'top_akm_bs' or car_mode == 'top_akm_dl':
         ld.add_action(
             DeclareLaunchArgument(
@@ -85,9 +88,7 @@ def generate_launch_description():
             )
         )
 
-    """
-    LSN10 lidar launch. More lidars have to be added
-    """
+    # 1. LSN10 lidar launch
     ld.add_action(
         Node(
             package='ls01',
@@ -102,8 +103,9 @@ def generate_launch_description():
     )
     
 
+    # 2. Conditional computer vision hardware and software launches 
     if camera_capabilities == 'astra_s':
-        ##### ASTRA
+        ## 2.1 Orbbec Astra S 
         launch2 = GroupAction([    
             PushRosNamespace(robot_name),
             IncludeLaunchDescription(
@@ -115,25 +117,42 @@ def generate_launch_description():
         
         ld.add_action(launch2)
 
-        ##### RTABMAP
-        """
-        Most probably wont be used because loses navigation too often
-        """
-        rtabmap_args = {
-            'namespace' : robot_name
-        }.items()
+        # ##### RTABMAP
+        # """
+        # Most probably wont be used because loses navigation too often
+        # """
+        # rtabmap_args = {
+        #     'namespace' : robot_name
+        # }.items()
 
-        rtabmap_launch = GroupAction([    
-            PushRosNamespace(robot_name),
-            IncludeLaunchDescription(
-                            PythonLaunchDescriptionSource([os.path.join(
-                            get_package_share_directory('turn_on_launches'), ''),
-                            'rtabmap_astra_rgbd.launch.py']), 
-                            # launch_arguments=rtabmap_args
-                        )]
-        )
+        # rtabmap_launch = GroupAction([    
+        #     PushRosNamespace(robot_name),
+        #     IncludeLaunchDescription(
+        #                     PythonLaunchDescriptionSource([os.path.join(
+        #                     get_package_share_directory('turn_on_launches'), ''),
+        #                     'rtabmap_astra_rgbd.launch.py']), 
+        #                     # launch_arguments=rtabmap_args
+        #                 )]
+        # )
         
-        ld.add_action(rtabmap_launch)
+        # ld.add_action(rtabmap_launch)
+
+        ## 2.2 Visual odometry node
+        orb_slam_3_node = Node(
+            package="ros2_orb_slam3",
+            executable="rgbd_node",
+            exec_name="astra_s_orb_slam",
+            remappings=[
+                ('/camera/color/image_raw', f'/{robot_name}/camera/color/image_raw')
+                ('/camera/depth/image_raw', f'/{robot_name}/camera/depth/image_raw')
+            ],
+            parameters=[
+                {"experimentConfig" : "Astra_S"}, # Is taken from
+                {"pkg_path" : f'{get_package_share_directory("ros2_orb_slam3")}/../../../src/ros2_orb_slam3/'}
+            ]
+        )
+
+        ld.add_action(orb_slam_3_node)
 
     elif camera_capabilities == 'zed2i':
         ###### ZED 2i
