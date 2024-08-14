@@ -170,18 +170,18 @@ def generate_launch_description():
                 'robot_id' : robot_id
             }.items()
 
-        # cslam_launch = GroupAction([
-        #         SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
-        #         IncludeLaunchDescription(
-        #                         PythonLaunchDescriptionSource([os.path.join(
-        #                         get_package_share_directory('turn_on_launches'), ''),
-        #                         # 'swarm_slam_stereo.launch.py']), 
-        #                         'swarm_slam.launch.py']), 
-        #                         launch_arguments=cslam_args
-        #                     ),
-        # ])
+        cslam_launch = GroupAction([
+                SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
+                IncludeLaunchDescription(
+                                PythonLaunchDescriptionSource([os.path.join(
+                                get_package_share_directory('turn_on_launches'), ''),
+                                # 'swarm_slam_stereo.launch.py']), 
+                                'swarm_slam.launch.py']), 
+                                launch_arguments=cslam_args
+                            ),
+        ])
 
-        # ld.add_action(cslam_launch)
+        ld.add_action(cslam_launch)
 
     # 2.2 ZED2i
     elif camera_capabilities == 'zed2i':
