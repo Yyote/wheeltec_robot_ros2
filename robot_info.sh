@@ -1,8 +1,7 @@
-# Example setup
-# export ROBOT_NAME=r                       # Required!
-# export ROBOT_ID=0                         # Required!
-# export ROBOT_CAMERA_CAPABILITIES=astra_s  # Required!
-# export ROS_DOMAIN_ID=207
+export ROBOT_NAME=r                       # Required!
+export ROBOT_ID=1                         # Required!
+export ROBOT_CAMERA_CAPABILITIES=astra_s  # Required!
+export ROS_DOMAIN_ID=207
 
 echo Robot name = ${ROBOT_NAME}
 echo Robot id = ${ROBOT_ID}
