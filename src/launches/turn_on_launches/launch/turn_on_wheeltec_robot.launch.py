@@ -149,11 +149,13 @@ def generate_launch_description():
             exec_name="astra_s_orb_slam",
             remappings=[
                 ('/camera/color/image_raw', f'/{robot_name}/camera/color/image_raw'),
-                ('/camera/depth/image_raw', f'/{robot_name}/camera/depth/image_raw')
+                ('/camera/depth/image_raw', f'/{robot_name}/camera/depth/image_raw'),
+                ('/orb_slam3/odom', f'/{robot_name}/orb_slam3/odom'),
             ],
             parameters=[
                 {"experimentConfig" : "Astra_S"}, # Is taken from
-                {"pkg_path" : f'{get_package_share_directory("ros2_orb_slam3")}/../../../../src/ros2_orb_slam3/'}
+                {"pkg_path" : f'{get_package_share_directory("ros2_orb_slam3")}/../../../../src/ros2_orb_slam3/'},
+                {"odom_link" : f'{robot_name}_odom'},
             ]
         )
 
