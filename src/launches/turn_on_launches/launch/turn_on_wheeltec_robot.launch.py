@@ -148,7 +148,7 @@ def generate_launch_description():
             executable="rgbd_node",
             exec_name="astra_s_orb_slam",
             remappings=[
-                ('/camera/color/image_raw', f'/{robot_name}/camera/color/image_raw')
+                ('/camera/color/image_raw', f'/{robot_name}/camera/color/image_raw'),
                 ('/camera/depth/image_raw', f'/{robot_name}/camera/depth/image_raw')
             ],
             parameters=[
@@ -162,7 +162,7 @@ def generate_launch_description():
         # ## 2.1.3 C-SLAM
         cslam_args = {
                 'namespace' : robot_name,
-                'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
+                'config_file' : '(wip)astra_s_swarm_slam.yaml',
                 # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
                 'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
                 'robot_id' : robot_id
