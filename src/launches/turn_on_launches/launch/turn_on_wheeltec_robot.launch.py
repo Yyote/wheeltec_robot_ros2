@@ -153,7 +153,7 @@ def generate_launch_description():
             ],
             parameters=[
                 {"experimentConfig" : "Astra_S"}, # Is taken from
-                {"pkg_path" : f'{get_package_share_directory("ros2_orb_slam3")}/../../../src/ros2_orb_slam3/'}
+                {"pkg_path" : f'{get_package_share_directory("ros2_orb_slam3")}/../../../../src/ros2_orb_slam3/'}
             ]
         )
 
