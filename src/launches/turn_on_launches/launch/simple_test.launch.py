@@ -17,14 +17,27 @@ def generate_launch_description():
     that users have to set manually accroding to their robot group parameters.
     """
 
-    robot_pref = os.getenv('ROBOT_NAME')
+    robot_pref = f"{os.getenv('ROBOT_NAME')}"
     robot_id = f"{os.getenv('ROBOT_ID')}"
     robot_type = f"{os.getenv('ROBOT_TYPE')}"
 
-    robot_name = robot_pref + robot_id # This will be used as a prefix in many places like node namespaces, topic prefixes, tf prefixes, etc.
+    if robot_pref == "":
+        robot_pref = "r"
+    if robot_id == "":
+        robot_id = 1
+    if robot_type == "":
+        robot_type = "tracked"
+
+    odom_prefix = ""
+    if camera_capabilities == "zed2i":
+        odom_prefix = "/zed_node"
+    elif camera_capabilities == "astra_s":
+        odom_prefix = "/osb_slam3"
+
+    full_robot_name = robot_pref + robot_id # This will be used as a prefix in many places like node namespaces, topic prefixes, tf prefixes, etc.
     camera_capabilities = os.getenv('ROBOT_CAMERA_CAPABILITIES') # This defines the pipeline that the robot uses to get pointclouds and visual odometry
 
-    if robot_name is None or camera_capabilities is None:
+    if full_robot_name is None or camera_capabilities is None:
         raise Exception('Environment variables are not set. Please check the list carefully and set them accordingly.')
 
     print(f'camera_capabilities: {camera_capabilities}')
@@ -100,9 +113,9 @@ def generate_launch_description():
             executable='lsn10',
             name='lsn10',
             # emulate_tty=True, output='screen',
-            namespace=robot_name,
+            namespace=full_robot_name,
             parameters=[
-                {'lidar_frame' : robot_name + '/laser'},
+                {'lidar_frame' : full_robot_name + '/laser'},
             ]
         )
     )
@@ -113,7 +126,7 @@ def generate_launch_description():
     if camera_capabilities == 'astra_s':
         ## 2.1.1 Orbbec Astra S launch 
         launch2 = GroupAction([    
-            PushRosNamespace(robot_name),
+            PushRosNamespace(full_robot_name),
             IncludeLaunchDescription(
                             XMLLaunchDescriptionSource([os.path.join(
                             get_package_share_directory('astra_camera'), 'launch/'),
@@ -128,11 +141,11 @@ def generate_launch_description():
         # Most probably wont be used because loses navigation too often
         # """
         # rtabmap_args = {
-        #     'namespace' : robot_name
+        #     'namespace' : full_robot_name
         # }.items()
 
         # rtabmap_launch = GroupAction([    
-        #     PushRosNamespace(robot_name),
+        #     PushRosNamespace(full_robot_name),
         #     IncludeLaunchDescription(
         #                     PythonLaunchDescriptionSource([os.path.join(
         #                     get_package_share_directory('turn_on_launches'), ''),
@@ -149,44 +162,44 @@ def generate_launch_description():
             executable="rgbd_node",
             exec_name="astra_s_orb_slam",
             remappings=[
-                ('/camera/color/image_raw', f'/{robot_name}/camera/color/image_raw'),
-                ('/camera/depth/image_raw', f'/{robot_name}/camera/depth/image_raw'),
-                ('/orb_slam3/odom', f'/{robot_name}/orb_slam3/odom'),
+                ('/camera/color/image_raw', f'/{full_robot_name}/camera/color/image_raw'),
+                ('/camera/depth/image_raw', f'/{full_robot_name}/camera/depth/image_raw'),
+                ('/orb_slam3/odom', f'/{full_robot_name}/orb_slam3/odom'),
             ],
             parameters=[
                 {"experimentConfig" : "Astra_S"}, # Is taken from
                 {"pkg_path" : f'{get_package_share_directory("ros2_orb_slam3")}/../../../../src/ros2_orb_slam3/'},
-                {"odom_link" : f'{robot_name}_odom'},
+                {"odom_link" : f'{full_robot_name}_odom'},
             ]
         )
 
         ld.add_action(orb_slam_3_node)
 
         # ## 2.1.3 C-SLAM
-        cslam_args = {
-                'namespace' : robot_name,
-                'cslam_config_file' : 'astra_s_swarm_slam.yaml',
-                # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
-                'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
-                'robot_id' : robot_id
-            }.items()
+        # cslam_args = {
+        #         'namespace' : full_robot_name,
+        #         'cslam_config_file' : 'astra_s_swarm_slam.yaml',
+        #         # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
+        #         'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
+        #         'robot_id' : robot_id
+        #     }.items()
 
-        cslam_launch = GroupAction([
-                SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
-                IncludeLaunchDescription(
-                                PythonLaunchDescriptionSource([os.path.join(
-                                get_package_share_directory('turn_on_launches'), ''),
-                                # 'swarm_slam_stereo.launch.py']), 
-                                'swarm_slam.launch.py']), 
-                                launch_arguments=cslam_args
-                            ),
-        ])
+        # cslam_launch = GroupAction([
+        #         SetRemap(src=f"/{full_robot_name}/color/camera_info", dst=f"/{full_robot_name}/zed_node/rgb/camera_info"),
+        #         IncludeLaunchDescription(
+        #                         PythonLaunchDescriptionSource([os.path.join(
+        #                         get_package_share_directory('turn_on_launches'), ''),
+        #                         # 'swarm_slam_stereo.launch.py']), 
+        #                         'swarm_slam.launch.py']), 
+        #                         launch_arguments=cslam_args
+        #                     ),
+        # ])
 
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
 
     # 2.2 ZED2i
     elif camera_capabilities == 'zed2i':
-        robot_name = robot_name
+        full_robot_name = full_robot_name
         
         ## 2.2.1 TF from robot map to C-SLAM map
         depth2base_link = Node(
@@ -200,7 +213,7 @@ def generate_launch_description():
 
         ## 2.2.2 ZED 2i launch
         zed2i_launch_args = {
-                'camera_name' : robot_name,
+                'camera_name' : full_robot_name,
                 'publish_tf' : 'true',
                 'camera_model' : 'zed2i',
             }.items()
@@ -215,44 +228,124 @@ def generate_launch_description():
         ld.add_action(zed2i_launch)
         
         # ## 2.2.3 C-SLAM
-        cslam_args = {
-                'namespace' : robot_name,
-                'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
-                # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
-                'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
-                'robot_id' : robot_id
-            }.items()
+        # cslam_args = {
+        #         'namespace' : full_robot_name,
+        #         'config_file' : 'zed2i_rgbd_swarm_slam.yaml',
+        #         # 'config_file' : 'zed2i_stereo_swarm_slam.yaml',
+        #         'config_path' : os.path.join(get_package_share_directory('turn_on_wheeltec_robot'), 'config/'),
+        #         'robot_id' : robot_id
+        #     }.items()
 
-        cslam_launch = GroupAction([
-                SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
-                IncludeLaunchDescription(
-                                PythonLaunchDescriptionSource([os.path.join(
-                                get_package_share_directory('turn_on_launches'), ''),
-                                # 'swarm_slam_stereo.launch.py']), 
-                                'swarm_slam.launch.py']), 
-                                launch_arguments=cslam_args
-                            ),
-        ])
+        # cslam_launch = GroupAction([
+        #         SetRemap(src=f"/{full_robot_name}/color/camera_info", dst=f"/{full_robot_name}/zed_node/rgb/camera_info"),
+        #         IncludeLaunchDescription(
+        #                         PythonLaunchDescriptionSource([os.path.join(
+        #                         get_package_share_directory('turn_on_launches'), ''),
+        #                         # 'swarm_slam_stereo.launch.py']), 
+        #                         'swarm_slam.launch.py']), 
+        #                         launch_arguments=cslam_args
+        #                     ),
+        # ])
 
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
 
+    if robot_type == "tracked":
+        ld.add_action(
+            Node(
+                package='robot_models_tf2',
+                executable='tank',
+                name='tank_tf_publisher',
+                # emulate_tty=True, output='screen',
+                namespace=full_robot_name,
+                # parameters=[
+                #     {'usart_port_name' : '/dev/wheeltec_controller'},
+                # ]
+            )
+        )
+
+    # 2. Регуляторы для машинок
+    if robot_type == 'omni':
+        ld.add_action(Node(
+            package="augv_regulators",
+            executable="omni_regulator_node",
+            namespace=f"{robot_pref + robot_id}",
+            parameters=[
+                {'id': robot_id},
+                {'robot_ns': f"{robot_pref + robot_id}"},
+                {'odom_prefix': f"{odom_prefix}"},
+                {'max_linear_speed': "0.1"},
+                {'max_angular_speed': "0.1"},
+            ],
+            # emulate_tty=True, output='screen'
+        ))
+    elif robot_type == 'ackerman':
+        ld.add_action(Node(
+            package="augv_regulators",
+            executable="ackerman_regulator_node",
+            namespace=f"{robot_pref + robot_id}",
+            parameters=[
+                {'id': robot_id},
+                {'robot_ns': f"{robot_pref + robot_id}"},
+                {'odom_prefix': f"{odom_prefix}"},
+                {'max_linear_speed': "0.1"},
+                {'max_angular_speed': "0.1"},
+            ],
+            # emulate_tty=True, output='screen'
+        ))
+    elif robot_type == 'tracked':
+        ld.add_action(Node(
+            package="augv_regulators",
+            executable="tracked_regulator_node",
+            namespace=f"{robot_pref + robot_id}",
+            parameters=[
+                {'id': robot_id},
+                {'robot_ns': f"{robot_pref + robot_id}"},
+                {'odom_prefix': f"{odom_prefix}"},
+                {'max_linear_speed': "0.1"},
+                {'max_angular_speed': "0.1"},
+            ],
+            # emulate_tty=True, output='screen'
+        ))
+    else:
+        raise Exception(f'No such type: {robot_type}')
+
+
+
+    # 5. Автопилот для каждой машинки
     ld.add_action(
-        Node(
-            package='robot_models_tf2',
-            executable='tank',
-            name='tank_tf_publisher',
-            # emulate_tty=True, output='screen',
-            namespace=robot_name,
-            # parameters=[
-            #     {'usart_port_name' : '/dev/wheeltec_controller'},
-            # ]
+            Node(
+            package="autopilot_lite", 
+            executable="autopilot_lite_node",
+            namespace=f"{robot_pref + robot_id}",
+            parameters=[
+                {'id': robot_id},
+                {'name': robot_pref},
+                {'odom_prefix': odom_prefix},
+            ],
+            # emulate_tty=True,
+            # output="screen"
+        )
+    )
+    
+    # 6. Robot Info для каждой машинки
+    ld.add_action(
+            Node(
+            package="robot_info", 
+            executable="robot_info_node",
+            namespace=f"{robot_pref + robot_id}",
+            parameters=[{
+                'id': robot_id,
+                'platform_type': robot_type,
+            }],
+            # emulate_tty=True,
+            # output="screen"
         )
     )
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {
             'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
-            'robot_name' : robot_name,
+            'full_robot_name' : full_robot_name,
             }.items()
         launch1 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
@@ -266,7 +359,7 @@ def generate_launch_description():
                 'if_voice_control' : True,
                 'moveit_config' : True,
                 'preset' : True,
-                'robot_name': robot_name,
+                'full_robot_name': full_robot_name,
                 }.items(),
         ]
         launch2 = IncludeLaunchDescription(
@@ -282,7 +375,7 @@ def generate_launch_description():
     if not ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args2 = {
                 'odom_frame_id' : LaunchConfiguration('odom_frame_id'),
-                'robot_name' : robot_name,
+                'full_robot_name' : full_robot_name,
             }.items()
         launch2 = IncludeLaunchDescription(
                             PythonLaunchDescriptionSource([os.path.join(
@@ -296,7 +389,7 @@ def generate_launch_description():
     if LaunchConfiguration('navigation') == 'true':
         args={
             'car_mode' : car_mode,
-            'robot_name' : robot_name,
+            'full_robot_name' : full_robot_name,
             }.items()
         launch_teb_local_planner = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
@@ -309,7 +402,7 @@ def generate_launch_description():
     if LaunchConfiguration('pure3d_nav') == 'true':
         args={
             'car_mode' : car_mode,
-            'robot_name' : robot_name,
+            'full_robot_name' : full_robot_name,
             }.items()
         launch_teb_local_planner = IncludeLaunchDescription(
                                         PythonLaunchDescriptionSource([os.path.join(
@@ -329,7 +422,7 @@ def generate_launch_description():
         # ld.add_action(robot_model_visualization)
         args={
             'is_cartographer' : LaunchConfiguration('is_cartographer'),
-            'robot_name' : robot_name,
+            'full_robot_name' : full_robot_name,
             }.items()
         
         robot_pose_ekf = IncludeLaunchDescription(
