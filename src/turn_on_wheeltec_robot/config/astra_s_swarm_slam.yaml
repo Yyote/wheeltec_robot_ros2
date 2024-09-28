@@ -15,11 +15,10 @@
       image_crop_size: 376
       intra_loop_min_inbetween_keyframes: 8
       pnp_min_inliers: 100
-      detection_publication_period_sec: 0.2
+      detection_publication_period_sec: 1.0
       detection_publication_max_elems_per_msg: 10
       enable_intra_robot_loop_closures: true
-      keyframe_generation_ratio_threshold: 0.99
-      # keyframe_generation_ratio_distance: 1
+      keyframe_generation_ratio_threshold: 0.5
       use_vertex_cover_selection: true
       map_manager_process_period_ms: 100
       enable_sparsification: true
@@ -36,7 +35,7 @@
       heartbeat_period_sec: 1.0
     backend:
       pose_graph_optimization_start_period_ms: 500
-      pose_graph_optimization_loop_period_ms: 50
+      pose_graph_optimization_loop_period_ms: 100
       max_waiting_time_sec: 60
       enable_broadcast_tf_frames: true
     evaluation:
@@ -48,5 +47,5 @@
     visualization:
       enable: true
       publishing_period_ms: 1000
-      # voxel_size: 0.2
-      # max_range: 4.0
+      voxel_size: 0.1
+      max_range: 4.0
