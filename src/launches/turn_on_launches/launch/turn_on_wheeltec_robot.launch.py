@@ -172,7 +172,9 @@ def generate_launch_description():
             }.items()
 
         cslam_launch = GroupAction([
-                SetRemap(src=f"/{robot_name}/color/camera_info", dst=f"/{robot_name}/zed_node/rgb/camera_info"),
+                SetRemap(src=f"/orb_slam3/odom", dst=f"/{robot_name}/orb_slam3/odom"),
+                SetRemap(src=f"/camera/color/image_raw", dst=f"/{robot_name}/camera/color/image_raw"),
+                SetRemap(src=f"/camera/depth/image_raw", dst=f"/{robot_name}/camera/depth/image_raw"),
                 IncludeLaunchDescription(
                                 PythonLaunchDescriptionSource([os.path.join(
                                 get_package_share_directory('turn_on_launches'), ''),
