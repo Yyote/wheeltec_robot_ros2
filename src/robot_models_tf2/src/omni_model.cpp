@@ -36,11 +36,11 @@ class TankModelTFBroadcaster : public rclcpp::Node
         TransformStamped base2cam_transform;
         base2cam_transform.header.frame_id = robot_name + "/base_link";
         base2cam_transform.header.stamp = this->get_clock()->now();
-        base2cam_transform.child_frame_id = robot_name + "/base_link";
+        base2cam_transform.child_frame_id = "camera_link";
         
-        base2cam_transform.transform.translation.x = -0.17;
-        base2cam_transform.transform.translation.y = 0.02;
-        base2cam_transform.transform.translation.z = 0.05;
+        base2cam_transform.transform.translation.x = 0.12;
+        base2cam_transform.transform.translation.y = 0.0;
+        base2cam_transform.transform.translation.z = 0.075;
 
         // base2cam_transform.transform.rotation.x = 0.5;
         base2cam_transform.transform.rotation.x = 0;
@@ -55,9 +55,9 @@ class TankModelTFBroadcaster : public rclcpp::Node
         lidar2base_transform.header.stamp = this->get_clock()->now();
         lidar2base_transform.child_frame_id = robot_name + "/laser";
         
-        lidar2base_transform.transform.translation.x = -0.17;
-        lidar2base_transform.transform.translation.y = 0.02;
-        lidar2base_transform.transform.translation.z = 0.05;
+        lidar2base_transform.transform.translation.x = 0.085;
+        lidar2base_transform.transform.translation.y = 0.0;
+        lidar2base_transform.transform.translation.z = 0.09;
 
         // lidar2base_transform.transform.rotation.x = 0.5;
         lidar2base_transform.transform.rotation.x = 0;

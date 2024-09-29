@@ -270,13 +270,13 @@ def generate_launch_description():
             )
         )
 
-        ## 2.2.1 TF from robot map to C-SLAM map
-        depth2base_link = Node(
+        odom_to_base_link = Node(
             package="tf2_ros",
             executable="static_transform_publisher",
             exec_name=f"{robot_name}_static_transform_odom_to_base_link",
             arguments=["0", "0", "0", "0", "0", "0", f"{robot_id}/odom", f"{robot_name}/base_link"]
         )
+        ld.add_action(odom_to_base_link)
 
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
