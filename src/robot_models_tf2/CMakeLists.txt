@@ -29,8 +29,12 @@ endif()
 add_executable(tank src/tank_model.cpp)
 ament_target_dependencies(tank rclcpp tf2_ros geometry_msgs)
 
+add_executable(omni src/omni_model.cpp)
+ament_target_dependencies(omni rclcpp tf2_ros geometry_msgs)
+
 install(TARGETS
   tank
+  omni
   DESTINATION lib/${PROJECT_NAME})
 
 

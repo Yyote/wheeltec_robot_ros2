@@ -192,8 +192,8 @@ def generate_launch_description():
         depth2base_link = Node(
             package="tf2_ros",
             executable="static_transform_publisher",
-            exec_name="static_transform_depth_to_base_link",
-            arguments=["0", "0", "0", "0", "0", "0", "map", "robot0_map"]
+            exec_name=f"{robot_name}_static_transform_robot_map_to_wmap",
+            arguments=["0", "0", "0", "0", "0", "0", "map", f"robot{robot_id}_map"]
         )
 
         ld.add_action(depth2base_link)
@@ -236,18 +236,45 @@ def generate_launch_description():
 
         ld.add_action(cslam_launch)
 
-    ld.add_action(
-        Node(
-            package='robot_models_tf2',
-            executable='tank',
-            name='tank_tf_publisher',
-            # emulate_tty=True, output='screen',
-            namespace=robot_name,
-            # parameters=[
-            #     {'usart_port_name' : '/dev/wheeltec_controller'},
-            # ]
+    # 3. TF2 robot model
+
+    # ## 3.1 tank
+
+    if robot_type == 'tank':
+        ld.add_action(
+            Node(
+                package='robot_models_tf2',
+                executable='tank',
+                name='tank_tf_publisher',
+                namespace=robot_name,
+                parameters=[
+                    {'robot_name' : robot_name},
+                ]
+            )
         )
-    )
+    
+    # ## 3.2 omni wheel
+    elif robot_type == 'omni':
+        ld.add_action(
+            Node(
+                package='robot_models_tf2',
+                executable='omni',
+                name='omni_tf_publisher',
+                namespace=robot_name,
+                parameters=[
+                    {'robot_name' : robot_name},
+                ]
+            )
+        )
+
+        ## 2.2.1 TF from robot map to C-SLAM map
+        depth2base_link = Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            exec_name=f"{robot_name}_static_transform_odom_to_base_link",
+            arguments=["0", "0", "0", "0", "0", "0", f"{robot_id}/odom", f"{robot_name}/base_link"]
+        )
+
 
     if ((car_mode == 'mini_mec_moveit_six' or car_mode == 'mini_4wd_moveit_six') and if_voice == 'true'):
         launch_args1 = {

@@ -14,7 +14,7 @@ using geometry_msgs::msg::TransformStamped;
 class TankModelTFBroadcaster : public rclcpp::Node
 {
     public:
-    TankModelTFBroadcaster() : Node("TankModelTFBroadcaster") // инициалзация полей
+    TankModelTFBroadcaster() : Node("OmniModelTFBroadcaster") // инициалзация полей
     {
         timer = this->create_wall_timer(20ms, std::bind(&TankModelTFBroadcaster::timer_callback, this));
         broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
@@ -34,7 +34,7 @@ class TankModelTFBroadcaster : public rclcpp::Node
     void timer_callback() // Сама функция колбэка
     {
         TransformStamped base2cam_transform;
-        base2cam_transform.header.frame_id = robot_name + "_camera_center";
+        base2cam_transform.header.frame_id = robot_name + "/base_link";
         base2cam_transform.header.stamp = this->get_clock()->now();
         base2cam_transform.child_frame_id = robot_name + "/base_link";
         
