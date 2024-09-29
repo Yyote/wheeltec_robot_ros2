@@ -275,7 +275,7 @@ def generate_launch_description():
             package="tf2_ros",
             executable="static_transform_publisher",
             exec_name=f"{robot_name}_static_transform_odom_to_base_link",
-            arguments=["0", "0", "0", "0", "0", "0", f"{robot_id}/odom", f"{robot_name}/base_link"]
+            arguments=["0", "0", "0", "0", "0", "0", f"{robot_name}_odom", f"{robot_name}/base_link"]
         )
 
 
