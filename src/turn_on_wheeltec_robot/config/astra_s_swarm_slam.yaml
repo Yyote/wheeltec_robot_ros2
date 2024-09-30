@@ -10,7 +10,7 @@
       inter_robot_loop_closure_budget: 1
       inter_robot_detection_period_sec: 2
       max_queue_size: 100
-      similarity_threshold: 0.8
+      similarity_threshold: 0.6
       global_descriptors_topic: "global_descriptors"
       image_crop_size: 376
       intra_loop_min_inbetween_keyframes: 8
@@ -46,5 +46,5 @@
     visualization:
       enable: true
       publishing_period_ms: 100
-      voxel_size: 0.01
+      voxel_size: 0.1
       max_range: 4.0
