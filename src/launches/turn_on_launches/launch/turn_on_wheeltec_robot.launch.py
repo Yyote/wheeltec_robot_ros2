@@ -185,7 +185,7 @@ def generate_launch_description():
                             ),
         ])
 
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
 
     # 2.2 ZED2i
     elif camera_capabilities == 'zed2i':
@@ -237,7 +237,7 @@ def generate_launch_description():
                             ),
         ])
 
-        # ld.add_action(cslam_launch)
+        ld.add_action(cslam_launch)
 
     # 3. TF2 robot model
 
