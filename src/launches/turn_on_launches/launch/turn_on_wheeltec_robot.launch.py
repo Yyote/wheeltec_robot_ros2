@@ -237,7 +237,7 @@ def generate_launch_description():
                             ),
         ])
 
-        ld.add_action(cslam_launch)
+        # ld.add_action(cslam_launch)
 
     # 3. TF2 robot model
 
